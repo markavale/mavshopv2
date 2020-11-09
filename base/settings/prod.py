@@ -66,7 +66,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
-STATIC_ROOT = os.path.join(BASE_DIR,'dist')
+STATIC_ROOT = os.path.join(BASE_DIR,'dist', 'static')
 STATICFILES_DIRS = []
 
 
