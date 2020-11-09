@@ -173,7 +173,7 @@
             <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
           </div>
         </div>
-        <div class="row">
+        <div class="row" >
           <div class="col-md-6 col-xs-12">
             <ul class="hobby">
               <li>

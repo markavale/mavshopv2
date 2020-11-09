@@ -221,10 +221,14 @@ export default {
             this.loading = false;
             console.log(err);
             let error_data = err.response.data;
+            console.log(error_data);
             // console.log(error_data);
             for (const field_error in error_data) {
               this.errors.push(error_data[field_error][0]);
+              console.log(error_data[field_error]);
             }
+            
+            console.log(this.errors);
             this.error = true;
           });
       }

@@ -3,7 +3,7 @@ import os
 import dj_database_url
 from .base import *
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS += ['markvale15.herokuapp.com'] # PUT HERE YOUR DOMAIN NAME WHEN YOU DEPLOY YOUR WEB APP
 SECRET_KEY = config('SECRET_KEY')
 WSGI_APPLICATION = 'base.wsgi.prod.application'
@@ -34,9 +34,19 @@ DATABASES = {
         default=os.getenv('DATABASE_URL')
     )
 }
-
+CORS_ALLOWED_ORIGINS = [
+    'https://markvale15.herokuapp.com',
+    # 'http://localhost:8080',
+    # 'http://localhost:8081',
+    # 'http://localhost:3307',
+    # 'http://localhost:3306'
+]
 CORS_ORIGIN_WHITELIST = (
-    'http://markanthonyvale.herokuapp.com',
+    'https://markvale15.herokuapp.com',
+    # 'http://localhost:8080',
+    # 'http://localhost:8081',
+    # 'http://localhost:3307',
+    # 'http://localhost:3306'
 )
 
 # DATABASES = {

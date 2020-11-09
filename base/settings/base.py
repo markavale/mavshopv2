@@ -145,11 +145,7 @@ ACCOUNT_SIGNUP_REDIRECT_URL  = '/login'
 SITE_ID = 1
 
 # Django cors headers
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://localhost:8081",
-    "http://localhost:8000",
-]
+
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ORIGIN_ALLOW_ALL = False
 
