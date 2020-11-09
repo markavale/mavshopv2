@@ -64,7 +64,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-STATIC_URL = '/static/'
+STATIC_URL = '/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR,'dist', 'static')
 STATICFILES_DIRS = []
