@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="col-md-6 xs-12">
-              <div class="about_container">
+              <div class="about_box_container">
                 <h5 class="title-header">About me</h5>
               <p class="lead">
                 Mark Anthony Vale is a self-employed and actively looking for a
@@ -336,6 +336,9 @@ export default {
 }
 .about_container{
   padding: 2rem 2.5rem;
+}
+.about_box_container{
+  padding:1.2rem 1.5rem;
 }
 /* end */
 
