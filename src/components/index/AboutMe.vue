@@ -1229,7 +1229,7 @@ export default {
     margin: 35px;
   }
   .about_container{
-  padding: 2rem;
+  padding: 1.5rem;
 }
 }
 
