@@ -167,7 +167,7 @@
     </div>
 
     <div class="about__hobby">
-      <div class="container">
+      <div class="about_container">
         <div class="row">
           <div class="col-sm-12">
             <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
@@ -331,6 +331,9 @@ export default {
   width: 100%;
   border-radius: 0 0 85% 85% / 8%;
 
+}
+.about_container{
+  padding: 2rem;
 }
 /* end */
 
