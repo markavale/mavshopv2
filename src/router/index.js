@@ -51,7 +51,7 @@ const routes = [{
         }
     },
     {
-        path: '/auth/password/reset/confirm/:uid/:token/',
+        path: '/mav/auth/password/reset/confirm/:uid/:token/',
         name: 'password-confirm',
         component: () =>
             import ( /* webpackChunkName: "password-confirm" */ '@/views/auth/PasswordConfirm.vue'),
