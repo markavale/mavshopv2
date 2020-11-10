@@ -1,7 +1,7 @@
 import axios from 'axios'
 // import { state } from '@/store/modules/user'
 const APIUrlProduction = 'http://markvale15.herokuapp.com/'
-const APIUrlDevelopment = 'http://localhost:8000/'
+    // const APIUrlDevelopment = 'http://localhost:8000/'
 const APIUrl = APIUrlProduction
 
 
@@ -51,5 +51,5 @@ const getAPI = axios.create({
 //   }
 // })
 
-export { axiosBase, getAPI }
+// export { axiosBase, getAPI }
 export { axiosBase, getAPI }
