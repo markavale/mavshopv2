@@ -1,6 +1,6 @@
 import axios from 'axios'
 // import { state } from '@/store/modules/user'
-const APIUrl = 'http://localhost:8000/'
+// const APIUrl = 'http://localhost:8000/'
 const APIUrlProduction = 'http://markvale15.herokuapp.com/'
 
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
