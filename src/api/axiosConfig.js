@@ -1,6 +1,6 @@
 import axios from 'axios'
 // import { state } from '@/store/modules/user'
-const APIUrlProduction = 'http://markanthonyvale.herokuapp.com/'
+const APIUrlProduction = 'https://markanthonyvale.herokuapp.com/'
     // const APIUrlDevelopment = 'http://localhost:8000/'
 const APIUrl = APIUrlProduction
 
