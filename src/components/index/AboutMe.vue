@@ -167,13 +167,13 @@
     </div>
 
     <div class="about__hobby">
-      <div class="container pt-5">
+      <div class="container">
         <div class="row">
           <div class="col-sm-12">
             <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
           </div>
         </div>
-        <div class="row" >
+        <div class="row">
           <div class="col-md-6 col-xs-12">
             <ul class="hobby">
               <li>
@@ -330,6 +330,7 @@ export default {
   height: 800px;
   width: 100%;
   border-radius: 0 0 85% 85% / 8%;
+
 }
 /* end */
 

@@ -4,6 +4,8 @@ module.exports = {
     ],
     outputDir: 'dist',
     assetsDir: 'static',
+    // baseUrl: 'http://markvale15.herokuapp.com',
+    // baseUrl: 'localhost:8000/static/',
     // baseUrl: IS_PRODUCTION
     // ? 'http://cdn123.com'
     // : '/',
@@ -15,7 +17,7 @@ module.exports = {
         proxy: {
             '/*': {
                 // Forward frontend dev server request for /api to django dev server
-                target: 'http://localhost:8000/',
+                target: 'http://markvale15.herokuapp.com/',
             }
         }
     }
