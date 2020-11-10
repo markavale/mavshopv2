@@ -137,7 +137,8 @@
               </div>
             </div>
             <div class="col-md-6 xs-12">
-              <h5 class="title-header">About me</h5>
+              <div class="container">
+                <h5 class="title-header">About me</h5>
               <p class="lead">
                 Mark Anthony Vale is a self-employed and actively looking for a
                 Web development position , Mark is fueled by his passion for
@@ -160,6 +161,7 @@
                 videography. He also loves to travel and document his travel
                 experiences.
               </p>
+              </div>
             </div>
           </div>
         </div>
@@ -167,7 +169,7 @@
     </div>
 
     <div class="about__hobby">
-      <div class="about_container">
+      <div class="container">
         <div class="row">
           <div class="col-sm-12">
             <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
