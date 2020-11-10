@@ -70,7 +70,7 @@ const actions = {
                     resolve(true);
                     return new Promise((resolve, reject) => {
                         axiosBase
-                            .get("auth/user/", {
+                            .post("auth/user/", {
                                 headers: {
                                     "Content-Type": "application/x-www-form-urlencoded",
                                     Authorization: `Token ${localStorage.getItem("token")}`,
