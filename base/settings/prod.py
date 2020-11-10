@@ -29,11 +29,11 @@ WSGI_APPLICATION = 'base.wsgi.prod.application'
 ############
 # DATABASE #
 ############
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.getenv('DATABASE_URL')
-#     )
-# }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL')
+    )
+}
 CORS_ALLOWED_ORIGINS = [
     'http://markvale15.herokuapp.com'
     # 'http://localhost:8080',
