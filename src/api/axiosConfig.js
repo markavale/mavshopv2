@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 // import { state } from '@/store/modules/user'
 const APIUrlProduction = 'https://markanthonyvale.herokuapp.com/'
     // const APIUrlDevelopment = 'http://localhost:8000/'
@@ -15,7 +16,7 @@ const axiosBase = axios.create({
     baseURL: APIUrl,
     headers: {
         'Content-Type': 'application/json',
-        //'Authentication': `Token ${localStorage.getItem('token')}`
+        'X-CSRFToken': Cookies.get('csrftoken')
     }
 })
 const getAPI = axios.create({
