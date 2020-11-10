@@ -35,7 +35,7 @@ DATABASES = {
     )
 }
 CORS_ALLOWED_ORIGINS = [
-    'http://markvale15.herokuapp.com/'
+    # 'http://markvale15.herokuapp.com/'
     # 'http://localhost:8080',
     # 'http://localhost:8081',
     # 'http://localhost:3307',
