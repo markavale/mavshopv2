@@ -1,6 +1,7 @@
 import axios from 'axios'
 // import { state } from '@/store/modules/user'
 const APIUrl = 'http://localhost:8000/'
+const APIUrlProduction = 'http://markvale15.herokuapp.com/'
 
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -9,14 +10,14 @@ const APIUrl = 'http://localhost:8000/'
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const axiosBase = axios.create({
-  baseURL: APIUrl,
-  headers: { 
-    'Content-Type': 'application/json' ,
-    //'Authentication': `Token ${localStorage.getItem('token')}`
+    baseURL: APIUrlProduction,
+    headers: {
+        'Content-Type': 'application/json',
+        //'Authentication': `Token ${localStorage.getItem('token')}`
     }
 })
 const getAPI = axios.create({
-  baseURL: APIUrl
+    baseURL: APIUrlProduction
 })
 
 
