@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="col-md-6 xs-12">
-              <div class="container">
+              <div class="about_container">
                 <h5 class="title-header">About me</h5>
               <p class="lead">
                 Mark Anthony Vale is a self-employed and actively looking for a
@@ -169,7 +169,7 @@
     </div>
 
     <div class="about__hobby">
-      <div class="container">
+      <div class="about_container">
         <div class="row">
           <div class="col-sm-12">
             <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
