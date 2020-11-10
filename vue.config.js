@@ -17,7 +17,7 @@ module.exports = {
         proxy: {
             '/*': {
                 // Forward frontend dev server request for /api to django dev server
-                target: 'http://markvale15.herokuapp.com/',
+                target: 'http://markanthonyvale.herokuapp.com/',
             }
         }
     }
