@@ -1197,6 +1197,9 @@ export default {
 /* end */
 
 @media screen and (min-width: 300px) and (max-width: 767px) {
+  .about_container{
+    padding: 1rem 1.5rem;
+  }
   .card__collection {
     padding: 10px;
     margin-right: 5px;
@@ -1225,12 +1228,18 @@ export default {
   .about {
     margin: 35px;
   }
+  .about_container{
+  padding: 2rem;
+}
 }
 
 /* On screens that are 600px or less, set the background color to olive */
 @media screen and (max-width: 600px) {
   .about {
     margin: 20px;
+  }
+  .about_container{
+    padding: 1.3rem 2rem;
   }
 }
 </style>
