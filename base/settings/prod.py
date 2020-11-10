@@ -48,13 +48,13 @@ CSRF_TRUSTED_ORIGINS = [
     # 'http://markanthonyvale.herokuapp.com'
 ]
 CORS_ALLOW_ALL_ORIGINS = False
-# CORS_ORIGIN_WHITELIST = [
-#     'http://markvale15.herokuapp.com'
-#     'http://localhost:8080',
-#     'http://localhost:8081',
-#     'http://localhost:3307',
-#     'http://localhost:3306'
-# ]
+CORS_ORIGIN_WHITELIST = [
+    'https://markanthonyvale.herokuapp.com'
+    # 'http://localhost:8080',
+    # 'http://localhost:8081',
+    # 'http://localhost:3307',
+    # 'http://localhost:3306'
+]
 
 # DATABASES = {
 #     'default': {
@@ -68,9 +68,9 @@ CORS_ALLOW_ALL_ORIGINS = False
 #     }
 #}
 
-MIDDLEWARE += [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-]
+# MIDDLEWARE += [
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+# ]
 # MIDDLEWARE_CLASSES += (
 #     'whitenoise.middleware.WhiteNoiseMiddleware',
 # )

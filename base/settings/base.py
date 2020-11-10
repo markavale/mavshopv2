@@ -78,6 +78,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware', # cors headers
     'corsheaders.middleware.CorsPostCsrfMiddleware', # trusted sites
+    'whitenoise.middleware.WhiteNoiseMiddleware', # whitenoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,8 +144,6 @@ ACCOUNT_SIGNUP_REDIRECT_URL  = '/login'
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
-
-# Django cors headers
 
 
 # Internationalization
