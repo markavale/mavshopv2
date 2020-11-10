@@ -1244,5 +1244,8 @@ export default {
   .about_container{
     padding: 1.3rem 2rem;
   }
+  .about_box_container{
+    padding:5px;
+  }
 }
 </style>
