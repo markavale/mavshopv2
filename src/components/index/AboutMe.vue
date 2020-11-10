@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="about">
-      <!-- <div class="container"> -->
+      <div class="container">
         <div class="container_box p-3">
           <div class="row">
             <div class="col-md-6 xs-12">
@@ -163,7 +163,7 @@
             </div>
           </div>
         </div>
-      <!-- </div> -->
+      </div>
     </div>
 
     <div class="about__hobby">
@@ -333,7 +333,7 @@ export default {
 
 }
 .about_container{
-  padding: 2rem;
+  padding: 2rem 3rem;
 }
 /* end */
 
