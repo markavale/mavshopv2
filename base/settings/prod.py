@@ -36,7 +36,7 @@ DATABASES = {
 }
 CORS_ALLOWED_ORIGINS = [
     'https://markanthonyvale.herokuapp.com',
-    'http://markanthonyvale.herokuapp.com'
+    # 'http://markanthonyvale.herokuapp.com'
     # 'http://localhost:8080',
     # 'http://localhost:8081',
     # 'http://localhost:3307',
@@ -45,7 +45,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://markanthonyvale.herokuapp.com',
-    'http://markanthonyvale.herokuapp.com'
+    # 'http://markanthonyvale.herokuapp.com'
 ]
 CORS_ALLOW_ALL_ORIGINS = False
 # CORS_ORIGIN_WHITELIST = [
