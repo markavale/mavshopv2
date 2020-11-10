@@ -335,7 +335,7 @@ export default {
 
 }
 .about_container{
-  padding: 2rem 3rem;
+  padding: 2rem 2.5rem;
 }
 /* end */
 

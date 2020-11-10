@@ -194,7 +194,7 @@ export default {
           name: this.name,
           subject: this.subject,
           email: this.email,
-          message: this.message,
+          message: this.message,about
         };
         this.$store
           .dispatch("sendMail", payload)

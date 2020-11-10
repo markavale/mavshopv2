@@ -1,9 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 // import { state } from '@/store/modules/user'
-// const APIUrlProduction = 'https://markanthonyvale.herokuapp.com/'
-const APIUrlDevelopment = 'http://localhost:8000/'
-const APIUrl = APIUrlDevelopment
+const APIUrlProduction = 'https://markanthonyvale.herokuapp.com/'
+// const APIUrlDevelopment = 'http://localhost:8000/'
+const APIUrl = APIUrlProduction
 
 
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
