@@ -104,7 +104,7 @@ STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / '../dist/static')
+    'dist/static'
     ]
 
 
