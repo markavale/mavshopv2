@@ -86,9 +86,9 @@ TEMPLATES = [
 #     }
 #}
 
-# MIDDLEWARE += [
-#     'whitenoise.middleware.WhiteNoiseMiddleware',
-# ]
+MIDDLEWARE += [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
 # MIDDLEWARE_CLASSES += (
 #     'whitenoise.middleware.WhiteNoiseMiddleware',
 # )
