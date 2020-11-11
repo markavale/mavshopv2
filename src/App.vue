@@ -4,85 +4,95 @@
       <router-view />
     </v-main>
     <v-btn
-            v-scroll="onScroll"
-            v-show="fab"
-            fab
-            dark
-            fixed
-            bottom
-            right
-            color="primary"
-            @click="toTop"
-          >
-            <v-icon>keyboard_arrow_up</v-icon>
-          </v-btn>
+      v-scroll="onScroll"
+      v-show="fab"
+      fab
+      dark
+      fixed
+      bottom
+      right
+      color="primary"
+      @click="toTop"
+    >
+      <v-icon>keyboard_arrow_up</v-icon>
+    </v-btn>
+    <Loading :isLoading="loading" />
   </v-app>
 </template>
 
 <script>
-import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
-import { axiosBase } from '@/api/axiosConfig'
+import "cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css";
+import { axiosBase } from "@/api/axiosConfig";
+import Loading from "@/components/index/Loading";
 
 export default {
   name: "App",
   components: {
-    
+    Loading,
   },
-  mounted(){
+  mounted() {
     this.pageVisits();
+    this.showLoading();
   },
 
   data: () => ({
     fab: false,
     counter: 1,
     errors: [],
+    loading:false,
   }),
   methods: {
-    pageVisits(){
-      axiosBase.post('api/count-visit/', {
-        counter: this.counter,
-      })
-      .then()
-      .catch(err=>{
-        console.log(err)
-        let error_data = err.response.data;
+    showLoading(){
+      this.loading = true;
+      setTimeout(()=>{
+        this.loading = false;
+      }, 3500)
+    },
+    pageVisits() {
+      axiosBase
+        .post("api/count-visit/", {
+          counter: this.counter,
+        })
+        .then()
+        .catch((err) => {
+          console.log(err);
+          let error_data = err.response.data;
           console.log(error_data);
-            // console.log(error_data);
-            // for (const field_error in error_data) {
-            //   this.errors.push(error_data[field_error][0]);
-            //   console.log(error_data[field_error]);
-            // }
-            
-            // console.log(this.errors);
+          // console.log(error_data);
+          // for (const field_error in error_data) {
+          //   this.errors.push(error_data[field_error][0]);
+          //   console.log(error_data[field_error]);
+          // }
+
+          // console.log(this.errors);
         });
     },
-    onScroll (e) {
-      if (typeof window === 'undefined') return
-      const top = window.pageYOffset ||   e.target.scrollTop || 0
-      this.fab = top > 20
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.fab = top > 20;
     },
-    toTop () {
-      this.$vuetify.goTo(0)
-    }
-  }
+    toTop() {
+      this.$vuetify.goTo(0);
+    },
+  },
 };
 </script>
 
 
 <style lang="scss">
-html{
+html {
   scroll-behavior: smooth;
   box-sizing: border-box;
 }
 #app {
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
   background-color: #f5f5f5;
-  
 }
-.lead{
-  font-size:20px;
+.lead {
+  font-size: 20px;
   font-weight: 500;
-  color:#15314b;
+  color: #15314b;
   // color:#2c3e50;
 }
 .line-mf {
@@ -91,7 +101,7 @@ html{
   background-color: #0078ff;
   margin: 0 auto 15px auto;
 }
-.container_box{
+.container_box {
   padding: 3rem 2rem;
   background-color: #fff;
   margin: 50px 0;
@@ -104,7 +114,7 @@ html{
 //     margin-right: auto;
 //     margin-left: auto;
 // }
-.black-overlay{
+.black-overlay {
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 0;
@@ -112,7 +122,6 @@ html{
   padding: 0;
   height: 100vh;
   width: 100%;
-  opacity: .9;
+  opacity: 0.9;
 }
-
 </style>

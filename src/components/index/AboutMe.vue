@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="col-md-6 xs-12">
-              <div class="about_box_container">
+              <div class="container">
                 <h5 class="title-header">About me</h5>
               <p class="lead">
                 Mark Anthony Vale is a self-employed and actively looking for a
@@ -169,15 +169,15 @@
     </div>
 
     <div class="about__hobby">
-      <div class="about_container">
+      <div class="container">
         <div class="row">
           <div class="col-sm-12">
             <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
           </div>
-        </div>
+          </div>
         <div class="row">
           <div class="col-md-6 col-xs-12">
-            <ul class="hobby">
+            <!-- <ul class="hobby">
               <li>
                 <span class="hobby-icon"><i class="fas fa-code"></i></span>
                 <h1>Web Development</h1>
@@ -209,9 +209,10 @@
                 <h1>Videography</h1>
                 <p>I love to travel and documenting my travel experiences</p>
               </li>
-            </ul>
+            </ul> -->
+            <Timeline />
           </div>
-          <div class="col-md-6 col-xs-12" style="height: 300px">
+          <div class="col-md-6 col-xs-12" style="height: 300px" id="rotatingCube">
             <div id="wrapper">
               <div class="box-area">
                 <div
@@ -262,9 +263,9 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -273,6 +274,7 @@ import frontImage from '@/assets/img/webdev-3.png';
 import rightImage from '@/assets/img/graphic-design-1.png';
 import backImage from '@/assets/img/videography-1.png'; 
 import leftImage from '@/assets/img/photography-1.png'; 
+import Timeline from "@/components/index/Timeline";
 export default {
   name: "About",
   data(){
@@ -284,6 +286,9 @@ export default {
         leftImage,
       }
     }
+  },
+  components:{
+    Timeline,
   }
 };
 </script>
@@ -1198,7 +1203,11 @@ export default {
   background: #ff3636;
 }
 /* end */
-
+@media screen and (min-width: 767px) and (max-width: 950px){
+  #rotatingCube{
+    display:none;
+  }
+}
 @media screen and (min-width: 300px) and (max-width: 767px) {
   .about_container{
     padding: 1rem 1.5rem;

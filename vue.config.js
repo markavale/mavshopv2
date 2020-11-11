@@ -18,6 +18,7 @@ module.exports = {
             '/*': {
                 // Forward frontend dev server request for /api to django dev server
                 target: 'http://markanthonyvale.herokuapp.com/',
+                // target: 'http://localhost:8000/',
             }
         }
     }

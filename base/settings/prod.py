@@ -3,7 +3,7 @@ import os
 import dj_database_url
 from .base import *
 
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS += [ 'markanthonyvale.herokuapp.com'] # PUT HERE YOUR DOMAIN NAME WHEN YOU DEPLOY YOUR WEB APP
 SECRET_KEY = config('SECRET_KEY')#
 WSGI_APPLICATION = 'base.wsgi.prod.application'
@@ -36,6 +36,7 @@ DATABASES = {
 }
 CORS_ALLOWED_ORIGINS = [
     'https://markanthonyvale.herokuapp.com',
+    'http://markanthonyvale.herokuapp.com',
     # 'http://markanthonyvale.herokuapp.com'
     # 'http://localhost:8080',
     # 'http://localhost:8081',
@@ -45,15 +46,32 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://markanthonyvale.herokuapp.com',
-    # 'http://markanthonyvale.herokuapp.com'
+    'http://markanthonyvale.herokuapp.com',
 ]
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ORIGIN_WHITELIST = [
-    'https://markanthonyvale.herokuapp.com'
+    'https://markanthonyvale.herokuapp.com',
+    'http://markanthonyvale.herokuapp.com',,
     # 'http://localhost:8080',
     # 'http://localhost:8081',
     # 'http://localhost:3307',
     # 'http://localhost:3306'
+]
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [ 'dist' ], # BASE_DIR / 'templates' depends on frontend => build
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
 ]
 
 # DATABASES = {
@@ -86,7 +104,7 @@ STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / '../dist/static',)
+    os.path.join(BASE_DIR / '../dist/static')
     ]
 
 

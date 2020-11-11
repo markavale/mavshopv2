@@ -1,43 +1,5 @@
 <template>
   <div>
-    <!-- <transition name="slide-fade">
-      <div class="message-pop-up" id="" v-if="show">
-        <button class="close-message" @click="show = false">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-        <div class="container pt-3">
-          <div class="row">
-            <div class="col-xs-2">
-              <img
-                class="rounded-circle article-img"
-                src="@/assets/img/pop-img.jpg"
-              />
-            </div>
-            <div class="col-xs-10">
-              <h2 class="article-name">Mark Anthony Vale</h2>
-              <span class="article-sub ml-2" style="color: white"
-                >Developer</span
-              >
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <article class="media content-section">
-                <div class="media-body">
-                  <h2>
-                    <TextTyping :txtMessages="hello" />
-                  </h2>
-                  <p class="article-content pb-3 m-0">
-                    I hope all is well with you and your family. Stay safe and
-                    stay positive. All is well ✌ <br />God bless you.
-                  </p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-      </div>
-    </transition> -->
     <transition name="slide-fade">
       <div class="greetings" v-if="show">
         <v-card color="#23305e" dark width="350px" elevation="20">
@@ -124,7 +86,6 @@
               class="mb-0"
             ></v-textarea>
           </v-card-text>
-          <!-- <center>{{ rating }}</center> -->
           <v-divider></v-divider>
           <v-card-actions class="justify-space-between">
             <v-btn text @click="noThanks"> No Thanks </v-btn>

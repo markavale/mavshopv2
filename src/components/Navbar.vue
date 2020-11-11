@@ -6,12 +6,12 @@
       id="mainNav"
       v-on:scroll.prevent="onScroll"
     >
+    
       <div class="container">
         <a class="navbar-brand js-scroll" href="/"
           ><img src="@/assets/img/logo.png" alt="Logo" class="logo" />
           MAV
         </a>
-
         <button
           class="navbar-toggler collapsed"
           type="button"
@@ -136,6 +136,9 @@ export default {
   methods: {
     onScroll(e) {
       this.is_transparent = !(e.target.documentElement.scrollTop > 0);
+      // if(!this.is_transparent){
+
+      // }
     },
     getCurrentUser() {
       if (this.isAuthenticated) {
@@ -184,7 +187,11 @@ nav {
 }
 
 .navbar-b.navbar-reduce {
+  transition: all 0.5s ease-in-out;
   box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.06);
+  height: auto;
+  background-color:#fff;
+  width:100%;
 }
 
 .navbar-b .nav-item,
@@ -382,10 +389,15 @@ nav {
     background-color: transparent;
     padding: 8px 0 8px 10px;
   }
+  /* .collapse{
+    height: auto;
+    background-color: #fff;
+    width:100%;
+  } */
   .navbar {
     height: 70px;
     margin: 0;
-    padding: 0;
+    padding: 0 15px;
   }
   .navbar-brand {
     margin: 0;
@@ -412,14 +424,20 @@ nav {
   }
   .navbar-collapse {
     height: auto;
-    /* background-color:#fff; */
-    background-color: transparent;
+    background-color:transparent;
+    /* background-color: #fff; */
     padding: 8px 0 8px 10px;
   }
+  /* .collapse{
+    height: auto;
+    background-color: #fff;
+    width:100%;
+  } */
   .navbar {
     height: 70px;
+    width:100%;
     margin: 0;
-    padding: 0;
+    padding: 0 15px;
   }
   .navbar-brand {
     margin: 0;

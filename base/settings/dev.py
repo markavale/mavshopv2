@@ -1,6 +1,7 @@
 '''Use this for development'''
 
 from .base import *
+import os
 
 ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
 DEBUG = True
@@ -25,15 +26,35 @@ DATABASES = {
 #         #'SSL':
 #     }
 # }
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [ os.path.join(BASE_DIR, 'public') ], # BASE_DIR / 'templates' depends on frontend => build
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8081",
     "http://localhost:8000",
+    'http://localhost:3306',
+    'http://localhost:3307'
 ]
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'http://localhost:8081',
     'http://localhost:3307'
+    'http://localhost:3306'
 )
 CORS_ALLOW_ALL_ORIGINS = True
 AUTH_PASSWORD_VALIDATORS = [

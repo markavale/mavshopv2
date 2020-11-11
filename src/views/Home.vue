@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <Navbar />
     <div
       id="home"
@@ -24,6 +25,7 @@
     <Porfolio id="portfolio" />
     <Contact id="contact" />
     <MessagePopUp  />
+    
     <Footer />
   </div>
 </template>
@@ -38,6 +40,7 @@ import Porfolio from "@/components/index/Portfolio";
 import Contact from "@/components/index/Contact";
 import Footer from "@/components/index/Footer";
 import MessagePopUp from "@/components/index/MessagePopUp";
+
 export default {
   name: "home",
   data() {
@@ -84,6 +87,7 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .img_parralax > .home__text {
   text-align: center;
 }
