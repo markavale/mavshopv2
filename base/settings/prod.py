@@ -61,7 +61,7 @@ CORS_ORIGIN_WHITELIST = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'frontend/dist' ], # BASE_DIR / 'templates' depends on frontend => build
+        'DIRS': [ BASE_DIR / 'dist' ], # BASE_DIR / 'templates' depends on frontend => build
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,7 +104,7 @@ STATIC_URL = '/static/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'frontend/dist/static'
+    BASE_DIR / 'dist/static'
     ]
 
 

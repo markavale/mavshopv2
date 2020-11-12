@@ -30,7 +30,7 @@ DATABASES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'frontend/public' ], # BASE_DIR / 'templates' depends on frontend => build
+        'DIRS': [ BASE_DIR / 'public' ], # BASE_DIR / 'templates' depends on frontend => build
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
