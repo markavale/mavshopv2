@@ -4,7 +4,7 @@ from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent 
 
 
 # Quick-start development settings - unsuitable for production
@@ -14,21 +14,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
 
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #3rd party
+]
+LOCAL_APPS = [
+    'users.apps.UsersConfig',
+    'analytics.apps.AnalyticsConfig',
+    'marketing.apps.MarketingConfig',
+]
+THIRD_PARTY_APPS = [
     'dj_rest_auth',
     'rest_framework',
     'rest_framework.authtoken',
@@ -40,11 +45,11 @@ INSTALLED_APPS = [
     'taggit',
     'taggit_serializer',
     'corsheaders',
-    #Local apps
-    'users.apps.UsersConfig',
-    'analytics.apps.AnalyticsConfig',
-    'marketing.apps.MarketingConfig',
 ]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
+
 
 
 # DJANGO RESTFRAMEWORK
@@ -78,7 +83,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware', # cors headers
     'corsheaders.middleware.CorsPostCsrfMiddleware', # trusted sites
-    # 'whitenoise.middleware.WhiteNoiseMiddleware', # whitenoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

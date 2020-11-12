@@ -1,7 +1,7 @@
 '''Use this for development'''
 
 from .base import *
-import os
+# import os
 
 ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
 DEBUG = True
@@ -30,7 +30,7 @@ DATABASES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'public') ], # BASE_DIR / 'templates' depends on frontend => build
+        'DIRS': [ BASE_DIR / 'frontend/public' ], # BASE_DIR / 'templates' depends on frontend => build
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,9 +68,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # it depends on frontend
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # staticfiles for collecting static and for deploymen
+STATICFILES_DIRS = [BASE_DIR / 'static'] # it depends on frontend
+STATIC_ROOT = BASE_DIR / 'staticfiles' # staticfiles for collecting static and for deploymen
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
