@@ -4,7 +4,6 @@ module.exports = {
     ],
     outputDir: 'dist',
     assetsDir: 'static',
-    // baseUrl: 'http://markvale15.herokuapp.com',
     // baseUrl: 'localhost:8000/static/',
     // baseUrl: IS_PRODUCTION
     // ? 'http://cdn123.com'
