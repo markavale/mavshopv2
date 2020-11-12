@@ -137,31 +137,35 @@
               </div>
             </div>
             <div class="col-md-6 xs-12">
-              <div class="container">
+              <!-- <div class="container">
+              
+              </div> -->
+              <v-container>
                 <h5 class="title-header">About me</h5>
-              <p class="lead">
-                Mark Anthony Vale is a self-employed and actively looking for a
-                Web development position , Mark is fueled by his passion for
-                understanding different tech stacks. He considers himself a
-                "forever student", eager to build on his academic foundation in
-                computer science to stay in tune with the latest technology.
-              </p>
-              <p class="lead">
-                His hunger for knowledge and determination to turn ideas into
-                action has contributed to a successful thesis project, wherein
-                he led developing a web application called "E-barangay", it aims
-                to improve a local government unit services through descriptive
-                analytics. Also, his thesis groupmates and his thesis adviser
-                wrote three research papers and got accepted for oral
-                presentation.
-              </p>
-              <p class="lead">
-                Mark believes competing to yourself and not to others is key to
-                success. Mark has interest in music, photography and
-                videography. He also loves to travel and document his travel
-                experiences.
-              </p>
-              </div>
+                <p class="lead">
+                  Mark Anthony Vale is a self-employed and actively looking for
+                  a Web development position , Mark is fueled by his passion for
+                  understanding different tech stacks. He considers himself a
+                  "forever student", eager to build on his academic foundation
+                  in computer science to stay in tune with the latest
+                  technology.
+                </p>
+                <p class="lead">
+                  His hunger for knowledge and determination to turn ideas into
+                  action has contributed to a successful thesis project, wherein
+                  he led developing a web application called "E-barangay", it
+                  aims to improve a local government unit services through
+                  descriptive analytics. Also, his thesis groupmates and his
+                  thesis adviser wrote three research papers and got accepted
+                  for oral presentation.
+                </p>
+                <p class="lead">
+                  Mark believes competing to yourself and not to others is key
+                  to success. Mark has interest in music, photography and
+                  videography. He also loves to travel and document his travel
+                  experiences.
+                </p>
+              </v-container>
             </div>
           </div>
         </div>
@@ -169,12 +173,20 @@
     </div>
 
     <div class="about__hobby">
-      <div class="container">
+      <!-- <div class="container">
+        
+        </div> -->
+      <v-container>
         <div class="row">
           <div class="col-sm-12">
-            <h1 class="title-header center" style="color: #fff; font-size:3rem; font-weight:650">What I do?</h1>
+            <h1
+              class="title-header center"
+              style="color: #fff; font-size: 3rem; font-weight: 650"
+            >
+              What I do?
+            </h1>
           </div>
-          </div>
+        </div>
         <div class="row">
           <div class="col-md-6 col-xs-12">
             <!-- <ul class="hobby">
@@ -212,7 +224,11 @@
             </ul> -->
             <Timeline />
           </div>
-          <div class="col-md-6 col-xs-12" style="height: 300px" id="rotatingCube">
+          <div
+            class="col-md-6 col-xs-12"
+            style="height: 300px"
+            id="rotatingCube"
+          >
             <div id="wrapper">
               <div class="box-area">
                 <div
@@ -263,33 +279,33 @@
               </div>
             </div>
           </div>
-          </div>
         </div>
-      </div>
+      </v-container>
+    </div>
   </div>
 </template>
 
 <script>
-import frontImage from '@/assets/img/webdev-3.png'; 
-import rightImage from '@/assets/img/graphic-design-1.png';
-import backImage from '@/assets/img/videography-1.png'; 
-import leftImage from '@/assets/img/photography-1.png'; 
+import frontImage from "@/assets/img/webdev-3.png";
+import rightImage from "@/assets/img/graphic-design-1.png";
+import backImage from "@/assets/img/videography-1.png";
+import leftImage from "@/assets/img/photography-1.png";
 import Timeline from "@/components/index/Timeline";
 export default {
   name: "About",
-  data(){
+  data() {
     return {
-      box:{
+      box: {
         frontImage,
         rightImage,
         backImage,
         leftImage,
-      }
-    }
+      },
+    };
   },
-  components:{
+  components: {
     Timeline,
-  }
+  },
 };
 </script>
 
@@ -301,8 +317,8 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-.about{
-  margin:70px;
+.about {
+  margin: 70px;
 }
 /* custom */
 .title-header {
@@ -337,13 +353,12 @@ export default {
   height: 800px;
   width: 100%;
   border-radius: 0 0 85% 85% / 8%;
-
 }
-.about_container{
+.about_container {
   padding: 2rem 2.5rem;
 }
-.about_box_container{
-  padding:1.2rem 1.5rem;
+.about_box_container {
+  padding: 1.2rem 1.5rem;
 }
 /* end */
 
@@ -394,7 +409,7 @@ export default {
   top: 50%;
   perspective: 1500px;
 }
-#wrapper2{
+#wrapper2 {
   position: absolute;
   right: 25%;
   top: 50%;
@@ -408,8 +423,8 @@ export default {
   animation-duration: 30s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes rotate {
@@ -418,7 +433,6 @@ export default {
   }
   100% {
     transform: rotate3d(0, 1, 0, 360deg);
-    ;
   }
 }
 
@@ -428,31 +442,28 @@ export default {
   height: 400px;
   border: 2px solid #262626;
   -webkit-box-shadow: 0 8px 6px -6px black;
-	-moz-box-shadow: 0 8px 6px -6px black;
-  box-shadow: 0 32px 24px -24px rgba(68,68,68,0.7);
+  -moz-box-shadow: 0 8px 6px -6px black;
+  box-shadow: 0 32px 24px -24px rgba(68, 68, 68, 0.7);
   margin-top: 20px;
-  padding:200px;
-  
+  padding: 200px;
 }
 
-.box-logo{
-  height:400px;
-  width:400px;
-  position:absolute;
-  
+.box-logo {
+  height: 400px;
+  width: 400px;
+  position: absolute;
 }
-.img-svg{
-  height:400px;
-  width:400px;
-  top:50%;
-  left:25%;
+.img-svg {
+  height: 400px;
+  width: 400px;
+  top: 50%;
+  left: 25%;
 }
 
 #box-front {
   transform: translateX(-200px) translateY(-100px) translateZ(200px);
   /* background: rgba(255, 16, 107, 0.5); */
-  background-color: rgba(17, 25, 48,0.5);
-
+  background-color: rgba(17, 25, 48, 0.5);
 }
 
 #box-back {
@@ -476,25 +487,23 @@ export default {
 #box-top {
   transform: translateX(-200px) translateY(-300px) rotateX(90deg);
   /* background: rgba(0, 6, 246, 0.5); */
-  background: rgba(25, 41, 56,0.5);
+  background: rgba(25, 41, 56, 0.5);
 }
 
 #box-bottom {
   transform: translateX(-200px) translateY(100px) rotateX(90deg);
   /* background: rgba(255, 30, 0, 0.5); */
-  background: rgba(25, 41, 56,0.5);
-  
+  background: rgba(25, 41, 56, 0.5);
 }
 
 .box-area {
   transform: rotateX(90deg) rotateY(90deg);
 }
 
-
 .shadow {
-  -moz-box-shadow:    3px 3px 5px 6px #ccc;
+  -moz-box-shadow: 3px 3px 5px 6px #ccc;
   -webkit-box-shadow: 3px 3px 5px 6px #ccc;
-  box-shadow:         3px 3px 5px 6px #ccc;
+  box-shadow: 3px 3px 5px 6px #ccc;
 }
 /* End */
 
@@ -1203,13 +1212,13 @@ export default {
   background: #ff3636;
 }
 /* end */
-@media screen and (min-width: 767px) and (max-width: 950px){
-  #rotatingCube{
-    display:none;
+@media screen and (min-width: 767px) and (max-width: 950px) {
+  #rotatingCube {
+    display: none;
   }
 }
 @media screen and (min-width: 300px) and (max-width: 767px) {
-  .about_container{
+  .about_container {
     padding: 1rem 1.5rem;
   }
   .card__collection {
@@ -1219,30 +1228,29 @@ export default {
   .img-responsive {
     margin: 0 auto;
   }
-  #wrapper{
-    display:none;
+  #wrapper {
+    display: none;
   }
-  ul.hobby{
-    text-align:center;
-    padding:0;
-    margin:0 0 20px 0;
-
+  ul.hobby {
+    text-align: center;
+    padding: 0;
+    margin: 0 0 20px 0;
   }
   .hobby > li {
-    text-align:center;
-    margin:0 auto;
+    text-align: center;
+    margin: 0 auto;
   }
-  .hobby-line{
-    margin:0 auto;
+  .hobby-line {
+    margin: 0 auto;
   }
 }
 @media screen and (max-width: 992px) {
   .about {
     margin: 35px;
   }
-  .about_container{
-  padding: 1.5rem;
-}
+  .about_container {
+    padding: 1.5rem;
+  }
 }
 
 /* On screens that are 600px or less, set the background color to olive */
@@ -1250,11 +1258,11 @@ export default {
   .about {
     margin: 20px;
   }
-  .about_container{
+  .about_container {
     padding: 1.3rem 2rem;
   }
-  .about_box_container{
-    padding:5px;
+  .about_box_container {
+    padding: 5px;
   }
 }
 </style>
