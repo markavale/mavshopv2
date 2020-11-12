@@ -136,11 +136,11 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 xs-12">
+            <div class="col-md-6 xs-12 p-3">
               <!-- <div class="container">
               
               </div> -->
-              <v-container>
+              <v-container >
                 <h5 class="title-header">About me</h5>
                 <p class="lead">
                   Mark Anthony Vale is a self-employed and actively looking for
@@ -180,7 +180,7 @@
         <div class="row">
           <div class="col-sm-12">
             <h1
-              class="title-header center"
+              class="title-header center mt-3"
               style="color: #fff; font-size: 3rem; font-weight: 650"
             >
               What I do?
@@ -188,7 +188,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 col-xs-12">
+          <div class="col-md-6 col-xs-12 px-2">
             <!-- <ul class="hobby">
               <li>
                 <span class="hobby-icon"><i class="fas fa-code"></i></span>
