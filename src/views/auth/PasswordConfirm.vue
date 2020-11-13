@@ -69,8 +69,8 @@
       </v-layout>
     </v-container>
     <div class="text-center">
-      <v-snackbar v-model="snackbar" :timeout="3000">
-        {{ message }}
+      <v-snackbar :left="true" v-model="snackbar" :timeout="3000">
+        Redirecting to login page.
         <template v-slot:action="{ attrs }">
           <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
             Close
@@ -105,9 +105,8 @@ export default {
   data: () => ({
     password1: "",
     password2: "",
-    snackbar: false,
+    snackbar: true,
     error: false,
-    message: "",
     valid: true,
     value: true,
     errors: [],
@@ -161,6 +160,7 @@ export default {
           token: data.token,
         })
         .then((res) => {
+          
           this.loading = false;
           this.error = false;
           console.log(res.data);
@@ -171,16 +171,20 @@ export default {
             position: 'top right',
             icon: require('../../assets/icons/check-circle-white.png'),
             closeButton: true,
-            timeOut: 3500,
+            timeOut: 3000,
             showDuration: 500,
             hideDuration: 500,
             showMethod: 'fadeIn',
             hideMethod: 'fadeOut',
             color: '#51A351',
           });
+          setTimeout(()=>{
+            this.snackbar = true
+          }, 3500)
           setTimeout(() => {
+            this.snackbar = false
             this.$router.push({ name: "login" });
-          }, 4000);
+          }, 4500);
         })
         .catch((error) => {
           this.loading = false;

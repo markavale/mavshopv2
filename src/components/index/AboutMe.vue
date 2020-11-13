@@ -189,39 +189,6 @@
         </div>
         <div class="row">
           <div class="col-md-6 col-xs-12 px-2">
-            <!-- <ul class="hobby">
-              <li>
-                <span class="hobby-icon"><i class="fas fa-code"></i></span>
-                <h1>Web Development</h1>
-                <p>
-                  I love to code and making my own snippets both frontend and
-                  backend for fast development.
-                </p>
-              </li>
-              <span class="hobby-line"></span>
-              <li>
-                <span class="hobby-icon"><i class="fas fa-paint-brush"></i></span>
-                <h1>Graphic Design</h1>
-                <p>I always make quality design on my works.</p>
-                
-              </li>
-              <span class="hobby-line"></span>
-              <li>
-                <span class="hobby-icon"><i class="fas fa-camera"></i></span>
-                <h1>Photography</h1>
-                <p>
-                  As a hobby, I love to capture random and special moments, but
-                  I often capture nature specifically sunrises, sunsets,
-                  animals, and more things that I find interesting.
-                </p>
-              </li>
-              <span class="hobby-line"></span>
-              <li>
-                <span class="hobby-icon"><i class="fas fa-video"></i></span>
-                <h1>Videography</h1>
-                <p>I love to travel and documenting my travel experiences</p>
-              </li>
-            </ul> -->
             <Timeline />
           </div>
           <div
@@ -241,7 +208,6 @@
                     background-color: rgba(17, 25, 48, 0.5);
                   "
                 ></div>
-
                 <div
                   id="box-right"
                   class="box"
@@ -252,7 +218,6 @@
                     background-color: rgba(17, 25, 48, 0.5);
                   "
                 ></div>
-
                 <div
                   id="box-back"
                   class="box"
@@ -263,7 +228,6 @@
                     background-color: rgba(17, 25, 48, 0.5);
                   "
                 ></div>
-
                 <div
                   id="box-left"
                   class="box"

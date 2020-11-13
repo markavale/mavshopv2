@@ -14,11 +14,12 @@ module.exports = {
     // and distribute
     devServer: {
         proxy: {
-            '/*': {
+            // '/*': {
+            '/api': {
                 // Forward frontend dev server request for /api to django dev server
                 target: 'https://markanthonyvale.herokuapp.com/',
                 // target: 'http://localhost:8000/',
-            }
+            },
         }
     }
 }

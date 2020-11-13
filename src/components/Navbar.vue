@@ -42,7 +42,7 @@
             <li class="nav-item">
               <a class="nav-link js-scroll" href="#contact">Contact</a>
             </li>
-            <li class="nav-item" v-if="!isAuthenticated">
+            <!-- <li class="nav-item" v-if="!isAuthenticated">
             <router-link :to="{ name: 'login' }" class="nav-link"
               >Login</router-link
             >
@@ -51,7 +51,7 @@
             <router-link :to="{ name: 'logout' }" class="nav-link"
               >Logout</router-link
             >
-          </li>
+          </li> -->
           </ul>
         </div>
       </div>
