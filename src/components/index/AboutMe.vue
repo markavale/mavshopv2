@@ -140,7 +140,7 @@
               <!-- <div class="container">
               
               </div> -->
-              <v-container >
+              <v-container>
                 <h5 class="title-header">About me</h5>
                 <p class="lead">
                   Mark Anthony Vale is a self-employed and actively looking for
@@ -176,7 +176,7 @@
       <!-- <div class="container">
         
         </div> -->
-      <v-container>
+      <v-container fluid>
         <div class="row">
           <div class="col-sm-12">
             <h1
