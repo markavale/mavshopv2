@@ -12,7 +12,8 @@ const routes = [{
         name: 'home',
         component: Home,
         meta: {
-            requiresAuth: false
+            requiresAuth: false,
+            title: 'Mark Anthony Vale'
         }
     },
     {
@@ -21,7 +22,8 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/About.vue'),
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            title: 'About Me'
         }
 
     },
@@ -30,7 +32,8 @@ const routes = [{
         name: 'login',
         component: Login,
         meta: {
-            requiresLogged: true
+            requiresLogged: true,
+            title: 'Login'
         },
 
     },
@@ -39,7 +42,8 @@ const routes = [{
         name: 'sign-up',
         component: Register,
         meta: {
-            requiresLogged: true
+            requiresLogged: true,
+            title: 'Sign Up'
         }
     },
     {
@@ -47,7 +51,8 @@ const routes = [{
         name: 'logout',
         component: Logout,
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            title: 'Logout'
         }
     },
     {
@@ -56,7 +61,8 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "password-confirm" */ '@/views/auth/PasswordConfirm.vue'),
         meta: {
-            requiresLogged: true
+            requiresLogged: true,
+            title: 'Passoword Confirm'
         }
 
     },

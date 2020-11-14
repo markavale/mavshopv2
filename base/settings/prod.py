@@ -121,4 +121,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # settings.py
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
-
+SECURE_SSL_REDIRECT = True
+# not sure yet
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

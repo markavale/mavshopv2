@@ -11,6 +11,8 @@ Vue.config.productionTip = false;
 
 // Vue router validation
 router.beforeEach((to, from, next) => {
+    document.title = to.meta.title
+    next()
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (!store.getters.isAuthenticated) {
             next({
