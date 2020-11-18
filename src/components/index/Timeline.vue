@@ -27,8 +27,7 @@ export default {
       timelinesData: [
         {
           title: "Web Development",
-          subtitle:
-            "I love to code and making my own snippets both frontend and backend for fast development.",
+          subtitle:"I do fullstack development using Django (python) for backendframework and VueJS, HTML, CSS, JS for frontend, and Bootstrap, Vuetify for styling",
           icon: "mdi-code-braces",
           color: 'red lighten-2',
         },

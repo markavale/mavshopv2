@@ -19,12 +19,6 @@ WSGI_APPLICATION = 'base.wsgi.prod.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 ############
 # DATABASE #
@@ -36,6 +30,7 @@ DATABASES = {
 }
 CORS_ALLOWED_ORIGINS = [
     'https://markanthonyvale.herokuapp.com',
+    'https://admin.mav.herokuapp.com',
     # 'http://markanthonyvale.herokuapp.com',
     # 'http://markanthonyvale.herokuapp.com'
     # 'http://localhost:8080',
@@ -46,16 +41,12 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://markanthonyvale.herokuapp.com',
-    # 'http://markanthonyvale.herokuapp.com',
+    'https://admin.mav.herokuapp.com',
 ]
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ORIGIN_WHITELIST = [
     'https://markanthonyvale.herokuapp.com',
-    # 'http://markanthonyvale.herokuapp.com',
-    # 'http://localhost:8080',
-    # 'http://localhost:8081',
-    # 'http://localhost:3307',
-    # 'http://localhost:3306'
+    'https://admin.mav.herokuapp.com',
 ]
 
 TEMPLATES = [
@@ -74,24 +65,9 @@ TEMPLATES = [
     },
 ]
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': config('NAME'),
-#         'USER': config('USER'),
-#         'PASSWORD': config('PASSWORD'),
-#         'PORT':config('PORT', cast=int),
-#         'HOST':config('HOST'),
-#         #'SSL':
-#     }
-#}
-
 MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-# MIDDLEWARE_CLASSES += (
-#     'whitenoise.middleware.WhiteNoiseMiddleware',
-# )
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
