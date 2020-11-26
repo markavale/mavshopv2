@@ -7,6 +7,7 @@ node_modules
 htmlcov
 
 #Django files
+*.dump
 env
 **/*.pyc
 **/__pycache__

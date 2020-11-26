@@ -8,7 +8,9 @@ class PageVisit(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.ip
+        if self.ip:
+            return self.ip
+        return "View"
 
 class PageViewsAnalytics(models.Model): 
     viewers = models.ManyToManyField(PageVisit)
