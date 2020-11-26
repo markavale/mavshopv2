@@ -47,16 +47,17 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8081",
     "http://localhost:8000",
-    'http://localhost:3306',
-    'http://localhost:3307'
+    "http://127.0.0.1:3307"
+    # 'http://localhost:3306',
+    # 'http://localhost:3307'
 ]
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8080',
-    'http://localhost:8081',
+
+CSRF_TRUSTED_ORIGINS = [
+     "http://localhost:8080",
+    "http://localhost:8081",
     "http://localhost:8000",
-    'http://localhost:3307',
-    'http://localhost:3306'
-)
+    "http://127.0.0.1:3307"
+]
 CORS_ALLOW_ALL_ORIGINS = True
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},

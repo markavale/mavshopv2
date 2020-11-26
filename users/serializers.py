@@ -1,38 +1,18 @@
 from rest_framework import serializers
-from django.conf import settings
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 from dj_rest_auth.serializers import PasswordResetSerializer, LoginSerializer, PasswordResetSerializer
 from rest_framework.authtoken.models import Token
+from users.models import User
 
-User = settings.AUTH_USER_MODEL
 
 class UserSerializer(serializers.ModelSerializer):
-    confirm_password = serializers.CharField()
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def validate(self, data):
-        if not data.get('password') or not data.get('confirm_password'):
-            raise serializers.ValidationError("Please enter a password and "
-                "confirm it.")
-
-        if data.get('password') != data.get('confirm_password'):
-            raise serializers.ValidationError("Those passwords don't match.")
-
-        return data
-
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(
-            email=validated_data['email'],
-            username=validated_data['username']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+        fields = '__all__'
+        extra_kwargs = {
+            'password': {'write_only': True, 'min_length': 8, 'max_length': 68}
+            }
 
 
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -101,5 +81,11 @@ class CustomLoginSerializer(LoginSerializer):
         #     raise AuthenticationFailed('Email is not verified')
 
         return super().validate(attrs)
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = '__all__'
 
 # class VerifyEmailSerializer(serializers.ModelSerailizer):

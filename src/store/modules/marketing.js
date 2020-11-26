@@ -14,7 +14,7 @@ const actions = {
     sendMail: (context, payload) => {
         return new Promise((resolve, reject) => {
             axiosBase
-                .post('api/send-mail/', payload)
+                .post('api/messages/', payload)
                 .then((res) => {
                     resolve(true);
                     context.commit('newMail', res.data);
@@ -25,7 +25,7 @@ const actions = {
     addRating: (context, payload) => {
         return new Promise((resolve, reject) => {
             axiosBase
-                .post('api/add-rating/', payload)
+                .post('api/ratings/', payload)
                 .then(res => {
                     resolve(true);
                     context.commit('newRating', res.data);

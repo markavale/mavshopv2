@@ -8,6 +8,7 @@ class Mail(models.Model):
     subject         = models.CharField(max_length=70, blank=True, null=True)
     email           = models.EmailField(max_length=70)
     message         = models.TextField(max_length=255)
+    seen	    = models.BooleanField(default=False)
     timestamp       = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -20,5 +21,8 @@ class Rating(models.Model):
 
     def __str__(self):
         return "Annonymous user rated {0} stars".format(self.rate)
+
+    
+
 
 

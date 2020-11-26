@@ -1,7 +1,12 @@
 from django.urls import path
-from . views import CountPageVisit, PageVisitList
+from . views import PageViewSet
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('page-views', PageViewSet)
 
 urlpatterns = [
-    path('count-visit/', CountPageVisit.as_view(), name='page-visit'),
-    path('page-views/', PageVisitList.as_view(), name='page-views'),
+    
 ]
+
+urlpatterns += router.urls

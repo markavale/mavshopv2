@@ -1,12 +1,17 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.views import APIView
-from .serializers import UserSerializer, CustomLoginSerializer
+from .serializers import UserSerializer, CustomLoginSerializer, UserProfileSerializer
 from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny, IsAuthenticated
 # from dj_rest_auth.views import LoginView
 from dj_rest_auth.registration.views import VerifyEmailView
 from django.contrib.auth import  authenticate #login
+from rest_framework import viewsets, status
+from django.conf import settings
+
+
+User = settings.AUTH_USER_MODEL
 
 class UserCreate(generics.CreateAPIView):
     permission_classes = (AllowAny,)
@@ -44,6 +49,17 @@ class LoginView(APIView):
 #         user = serializer.validated_data['user']
 #         authenticate(request, user)
 #         return super(LoginUserView, self).post(request)
+
+class UserViewSet(viewsets.ModelViewSet):
+    model = User
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def list(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
 class UserDetailView(APIView):
     #authentication_classes = []

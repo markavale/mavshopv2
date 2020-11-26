@@ -22,7 +22,7 @@
 
 <script>
 import "cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css";
-import { axiosBase } from "@/api/axiosConfig";
+// import { axiosBase } from "@/api/axiosConfig";
 import Loading from "@/components/index/Loading";
 
 export default {
@@ -48,23 +48,16 @@ export default {
         this.loading = false;
       }, 3500)
     },
-    pageVisits() {
-      axiosBase
-        .post("api/count-visit/", {
+    pageVisits() { //
+      this.$store
+        .dispatch("pageViewsIncrement", {
           counter: this.counter,
         })
-        .then()
+        .then(() =>console.log("Inceremented!!!"))
         .catch((err) => {
           console.log(err);
           let error_data = err.response.data;
           console.log(error_data);
-          // console.log(error_data);
-          // for (const field_error in error_data) {
-          //   this.errors.push(error_data[field_error][0]);
-          //   console.log(error_data[field_error]);
-          // }
-
-          // console.log(this.errors);
         });
     },
     onScroll(e) {
