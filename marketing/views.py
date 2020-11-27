@@ -49,10 +49,13 @@ class RatingViewSet(viewsets.ModelViewSet):
     def list(self, request):
         ratings = Rating.objects.all()
         serializer = RatingSerializer(ratings, many=True)
-        sum = 0.0
-        for rating in ratings:
-            sum += rating.rate
-        computed_rating = round((sum / ratings.count()), 2)
+        if ratings:
+            sum = 0.0
+            for rating in ratings:
+                sum += rating.rate
+            computed_rating = round((sum / ratings.count()), 2)
+        else:
+            computed_rating = 0
         dict = {
             "ratings":serializer.data,
             "rating_computed":computed_rating
