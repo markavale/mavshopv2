@@ -30,7 +30,7 @@
           id="navbarDefault"
         >
           <ul class="navbar-nav">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link js-scroll" href="#about">About</a>
             </li>
             <li class="nav-item">
@@ -38,11 +38,11 @@
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll" href="#portfolio">Portfolio</a>
-            </li>
+            </li> -->
             <li class="nav-item">
-              <a class="nav-link js-scroll" href="#contact">Contact</a>
+              <a class="nav-link js-scroll" href="#">Welcome, {{ user.username }}</a>
             </li>
-            <!-- <li class="nav-item" v-if="!isAuthenticated">
+            <li class="nav-item" v-if="!isAuthenticated">
             <router-link :to="{ name: 'login' }" class="nav-link"
               >Login</router-link
             >
@@ -51,7 +51,7 @@
             <router-link :to="{ name: 'logout' }" class="nav-link"
               >Logout</router-link
             >
-          </li> -->
+          </li>
           </ul>
         </div>
       </div>
@@ -142,6 +142,7 @@ export default {
     window.removeEventListener("scroll", this.onScroll);
   },
   created() {
+    this.getCurrentUser();
   },
   methods: {
     onScroll(e) {
@@ -162,6 +163,7 @@ export default {
           .then((res) => {
             this.$store.commit("currentUser", res.data);
             this.user = this.$store.state.user.user;
+            console.log("User")
           })
           .catch((err) => console.log(err));
       }

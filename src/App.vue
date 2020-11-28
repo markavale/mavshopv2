@@ -100,13 +100,6 @@ html {
   margin: 50px 0;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
-// .container{
-//     width: 100%;
-//     padding-right: 15px;
-//     padding-left: 15px;
-//     margin-right: auto;
-//     margin-left: auto;
-// }
 .black-overlay {
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;

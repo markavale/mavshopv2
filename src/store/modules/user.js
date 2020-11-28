@@ -13,6 +13,7 @@ const getters = {
     getUsers: (state) => state.users,
     isAuthenticated(state) {
         return state.token != null;
+        // return localStorage.getItem('token') != null
     },
     getAccessToken: (state) => state.token,
     requestUser: (state) => state.user,
@@ -22,7 +23,7 @@ const actions = {
     fetchUsers: ({ commit }) => {
         return new Promise((resolve, reject) => {
             axiosBase
-                .get("api/user-list/", {
+                .get("auth/user/", {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         Authorization: `Token ${localStorage.getItem("token")}`,
@@ -42,7 +43,7 @@ const actions = {
     fetchCurrentUser: (context) => {
         return new Promise((resolve, reject) => {
             axiosBase
-                .get("rest-auth/user/", {
+                .get("auth/user/", {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                         Authorization: `Token ${localStorage.getItem("token")}`,
@@ -60,7 +61,7 @@ const actions = {
     Login: (context, credentials) => {
         return new Promise((resolve, reject) => {
             axiosBase
-                .post("auth/login/", {
+                .post("auth/login-user/", {
                     username: credentials.username,
                     password: credentials.password
                 })
@@ -68,23 +69,23 @@ const actions = {
                     console.log(res.data.key);
                     context.commit("setToken", res.data.key);
                     resolve(true);
-                    return new Promise((resolve, reject) => {
-                        axiosBase
-                            .post("auth/user/", {
-                                headers: {
-                                    "Content-Type": "application/x-www-form-urlencoded",
-                                    Authorization: `Token ${localStorage.getItem("token")}`,
-                                },
-                            })
-                            .then((res) => {
-                                console.log("after login");
-                                console.log(res.data);
-                                console.log(res.data.username);
-                                context.commit("currentUser", res.data);
-                                resolve(true);
-                            })
-                            .catch((err) => reject(err));
-                    });
+                    // return new Promise((resolve, reject) => {
+                    //     axiosBase
+                    //         .post("auth/user/", {
+                    //             headers: {
+                    //                 "Content-Type": "application/x-www-form-urlencoded",
+                    //                 Authorization: `Token ${localStorage.getItem("token")}`,
+                    //             },
+                    //         })
+                    //         .then((res) => {
+                    //             console.log("after login");
+                    //             console.log(res.data);
+                    //             console.log(res.data.username);
+                    //             context.commit("currentUser", res.data);
+                    //             resolve(true);
+                    //         })
+                    //         .catch((err) => reject(err));
+                    // });
                 })
                 .catch((error) => {
                     reject(error);

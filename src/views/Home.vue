@@ -12,34 +12,22 @@
           <div class="home_contents">
             <h1 class="home_title_header">Hello, I'm Mark!</h1>
             <p class="home_title_subheader">
-              <TextTyping :txtMessages="messages" />
+              <!-- <TextTyping :txtMessages="messages" /> -->
             </p>
           </div>
         </div>
       </div>
       <div class="black-overlay"></div>
     </div>
-
-    <AboutMe id="about" />
-    <Services id="services" />
-    <Porfolio id="portfolio" />
-    <Contact id="contact" />
-    <MessagePopUp  />
-    
     <Footer />
   </div>
 </template>
 
 <script>
-import TextTyping from "@/components/index/TextTyping";
+// import TextTyping from "@/components/index/TextTyping";
 import Navbar from "@/components/Navbar";
 import backgroundUrl from "@/assets/img/homepage.jpg";
-import AboutMe from "@/components/index/AboutMe";
-import Services from "@/components/index/Services";
-import Porfolio from "@/components/index/Portfolio";
-import Contact from "@/components/index/Contact";
 import Footer from "@/components/index/Footer";
-import MessagePopUp from "@/components/index/MessagePopUp";
 
 export default {
   name: "home",
@@ -65,13 +53,13 @@ export default {
   },
   components: {
     Navbar,
-    TextTyping,
-    AboutMe,
-    Services,
-    Porfolio,
-    Contact,
+    // TextTyping,
+    // AboutMe,
+    // Services,
+    // Porfolio,
+    // Contact,
     Footer,
-    MessagePopUp,
+    // MessagePopUp,
   },
   mounted() {
   },

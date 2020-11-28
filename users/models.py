@@ -27,10 +27,12 @@ class User(AbstractUser):
                            )],
         unique=True
     )
+    first_name              = models.CharField(max_length=255, blank=True, null=True)
+    last_name               = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(default='default.jpg',
                               upload_to='avatar', null=True, blank=True)
-    # gender = models.CharField(
-    #     max_length=10, blank=True, null=True, choices=GENDER_CHOICES, default="")
+    gender = models.CharField(
+        max_length=10, blank=True, null=True, choices=GENDER_CHOICES, default="")
     email = models.EmailField(unique=True, blank=False,
                               error_messages={
                                   'unique': "A user with that email already exists.",
@@ -59,8 +61,8 @@ class User(AbstractUser):
         if self.active:
             return "User"
 
-    # def get_full_name(self):
-    #     return self.first_name + " " + self.last_name
+    def get_full_name(self):
+        return self.first_name + " " + self.last_name
 
     # def get_first_name(self):
     #     if self.first_name:

@@ -10,7 +10,7 @@ router.register('user', UserViewSet, basename='User')
 urlpatterns = [ 
     path('', include(router.urls)),
     path('', include('dj_rest_auth.urls')),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login-user/', LoginView.as_view(), name='login'),
     # path('user-details/', UserProfileView.as_view(), name='user-profile'),
     path('registration/', include('dj_rest_auth.registration.urls'), name='register'),
     path('registration/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
