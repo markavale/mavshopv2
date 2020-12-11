@@ -1,5 +1,5 @@
 {
-    "name": "djangovue",
+    "name": "mavshopv2",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -16,6 +16,7 @@
         "vue": "^2.6.11",
         "vue-router": "^3.2.0",
         "vue-toast-notification": "^0.5.4",
+        "vue-twentytwenty": "^0.10.1",
         "vue-typer": "^1.2.0",
         "vuelidate": "^0.7.6",
         "vuetify": "^2.2.11",

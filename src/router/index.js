@@ -7,14 +7,64 @@ import Logout from '@/components/auth/Logout'
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+    {
         path: '/',
         name: 'home',
         component: Home,
         meta: {
             requiresAuth: false,
             title: 'Mark Anthony Vale'
+            
         }
+    },
+    {
+        path: '/index',
+        name: 'index',
+        component: () =>
+            import ( /* webpackChunkName: "index" */ '../views/Index.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'Index',
+            breadCrumb: 'Home'
+        }
+
+    },
+    {
+        path: '/:itemType/:slug',
+        name: 'item',
+        component: () =>
+            import ( /* webpackChunkName: "product" */ '../views/product/Product.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'Item Details',
+            // breadCrumb: 'Item Instance'
+        },
+        // props: (route) => ({ item: route.query.slug })  
+
+    },
+    // {
+    //     path: '/product',
+    //     name: 'product',
+    //     component: () =>
+    //         import ( /* webpackChunkName: "product" */ '../views/product/Product.vue'),
+    //     meta: {
+    //         requiresAuth: false,
+    //         title: 'product'
+    //     }
+
+    // },
+    {
+        path: '/shop',
+        name: 'shop',
+        component: () =>
+            import ( /* webpackChunkName: "shop" */ '../views/Shop.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'shop',
+            breadCrumb: 'Item Type'
+        }
+
     },
     {
         path: '/about',

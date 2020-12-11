@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import User
+from .models import User, AnnonymousDownloader, UserDownload
 
 
 class UserAdmin(UserAdmin):
@@ -21,5 +21,6 @@ class UserAdmin(UserAdmin):
     #     (('Personal Info'), {'fields': ('email','image',)}),#'ip_address',
     # )
 
-
+admin.site.register(AnnonymousDownloader)
+admin.site.register(UserDownload)
 admin.site.register(User, UserAdmin)

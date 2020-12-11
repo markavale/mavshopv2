@@ -4,6 +4,7 @@ from .managers import UserManager
 # Validation
 from django.core.validators import RegexValidator
 from rest_framework.authtoken.models import Token
+from core.models import Item
 # import datetime # It could use for computing Age of users
 
 
@@ -29,7 +30,7 @@ class User(AbstractUser):
     )
     first_name              = models.CharField(max_length=255, blank=True, null=True)
     last_name               = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(default='default.jpg',
+    image = models.ImageField(default='default.png',
                               upload_to='avatar', null=True, blank=True)
     gender = models.CharField(
         max_length=10, blank=True, null=True, choices=GENDER_CHOICES, default="")
@@ -106,3 +107,32 @@ class User(AbstractUser):
     @property
     def is_verified(self):
         return self.verified
+
+class UserDownload(models.Model):
+    user                 = models.ForeignKey(User, on_delete=models.CASCADE)
+    items                = models.ManyToManyField(Item)
+    timestamp            = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
+    def total_downloads(self):
+        if self.items:
+            total = self.items.count()
+            return total
+        return 0
+
+
+class AnnonymousDownloader(models.Model):
+    items               = models.ManyToManyField(Item)
+    ip                  = models.GenericIPAddressField()
+    timestamp           = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'Annonymous User Download list'
+    
+    def total_downloads(self):
+        if self.items:
+            total = self.items.count()
+            return total
+        return 0

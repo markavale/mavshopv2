@@ -16,23 +16,23 @@
     >
       <v-icon>keyboard_arrow_up</v-icon>
     </v-btn>
-    <Loading :isLoading="loading" />
+    <!-- <Loading :isLoading="loading" /> -->
   </v-app>
 </template>
 
 <script>
 import "cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css";
 // import { axiosBase } from "@/api/axiosConfig";
-import Loading from "@/components/index/Loading";
+// import Loading from "@/components/index/Loading";
 
 export default {
   name: "App",
   components: {
-    Loading,
+    // Loading,
   },
   mounted() {
     this.pageVisits();
-    this.showLoading();
+    // this.showLoading();
   },
 
   data: () => ({
@@ -42,12 +42,12 @@ export default {
     loading:false,
   }),
   methods: {
-    showLoading(){
-      this.loading = true;
-      setTimeout(()=>{
-        this.loading = false;
-      }, 3500)
-    },
+    // showLoading(){
+    //   this.loading = true;
+    //   setTimeout(()=>{
+    //     this.loading = false;
+    //   }, 3500)
+    // },
     pageVisits() { //
       this.$store
         .dispatch("pageViewsIncrement", {

@@ -131,20 +131,6 @@ const actions = {
                 });
         });
     },
-    // setDevHoursModal() {
-    //     if (localStorage) {
-    //         let nextPopup = localStorage.getItem('isPopUp') || null
-
-    //         if (nextPopup > new Date()) {
-    //             return this.show = true;
-    //         }
-
-    //         let expires = new Date()
-    //         expires = expires.setHours(expires.getHours() + 24)
-
-    //         localStorage.setItem('isPopUp', expires)
-    //     }
-    // }
 };
 
 const mutations = {

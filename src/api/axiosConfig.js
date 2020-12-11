@@ -15,7 +15,8 @@ const axiosBase = axios.create({
     baseURL: APIUrl,
     headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': Cookies.get('csrftoken')
+        'X-CSRFToken': Cookies.get('csrftoken'),
+        'Authorization': localStorage.getItem('token')
     }
 })
 const getAPI = axios.create({

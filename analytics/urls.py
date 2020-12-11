@@ -1,4 +1,4 @@
-from django.urls import path
+# from django.urls import path
 from . views import PageViewSet
 from rest_framework.routers import DefaultRouter
 
