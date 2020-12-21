@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = [
     'taggit',
     'taggit_serializer',
     'corsheaders',
+    'django_filters',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -64,6 +65,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 # DJ REST AUTH CONF

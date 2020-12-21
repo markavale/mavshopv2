@@ -356,7 +356,13 @@
                 ></v-text-field> -->
                 <v-btn class="primary white--text" outlined tile dense
                 @click.prevent="addToCart(prodItem)"
+                v-if="!prodItem.is_free"
                   ><v-icon>mdi-cart</v-icon> ADD TO CART</v-btn
+                >
+                <v-btn class="primary white--text" outlined tile dense
+                @click.prevent="downloadItem(prodItem)"
+                v-else
+                  ><v-icon>mdi-download</v-icon> DOWNLOAD</v-btn
                 >
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
@@ -502,6 +508,31 @@ export default {
     //   axiosBase
     //   .post(`api/items/${item.slug}/`,item)
     // },
+    downloadItem(prodItem){
+      axiosBase
+        .get(`api/items/${prodItem.slug}/download/`, {responseType: 'blob'})
+        .then((response)=>{
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${prodItem.file.name}`);
+          document.body.appendChild(link);
+          link.click();
+          this.$toast.success({
+            title: `${prodItem.file.name}`,
+            message: "Download Success!",
+            position: "top right",
+            closeButton: true,
+            timeOut: 3500,
+            showDuration: 500,
+            hideDuration: 500,
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+          });
+          console.log("download success")
+        })
+        .catch(err=>console.log(err));
+    },
     addToCart(prodItem) {
       axiosBase
         .post(`api/add-to-cart/${prodItem.slug}/`, prodItem, {

@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.template.defaultfilters import slugify # new
 from taggit.managers import TaggableManager
+import os
 # from PIL import Image
 
 User = settings.AUTH_USER_MODEL
@@ -29,6 +30,7 @@ class Item(models.Model):
     category            = models.ForeignKey('Categories',on_delete=models.CASCADE,related_name='item_categories')
     reviews             = models.ManyToManyField('Review')
     tags                = TaggableManager()
+    timestamp           = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
@@ -54,10 +56,15 @@ class Item(models.Model):
     def get_file_name(self):
         return self.download_file.name.split('/')[-1]
 
-    # def get_download_url(self):
-    #     return reverse('core:download-file', kwargs={
-    #         'slug':self.slug
-    #     })
+    def get_file_size(self):
+        fullfilepath = ""
+        fullfilepath = "media/" + os.path.getsize("{}".format(self.download_file))
+        return fullfilepath
+
+    def get_download_url(self):
+        return reverse('download-file', kwargs={
+            'slug':self.slug
+        })
 
     
 

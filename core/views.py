@@ -12,7 +12,33 @@ from . serializers import (ItemSerializer, OrderItemSerializer, OrderSerializer,
                 WishListSerializer, CouponSerializer, AddCouponSerializer, PaymentSerializer, ReviewSerializer)
 from . models import (Item, Categories, OrderItem, Order,
             WishList, Coupon, Payment, Review)
-        
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+# @permission_classes([AllowAny])
+# @api_view(['GET', ])
+def download_view(request, slug):
+    item = Item.objects.get(slug=slug)
+    filename = item.get_file_name()
+    # if request.method == "GET":
+    if item.is_free:
+        response = HttpResponse(item.download_file, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        item.downloads += 1
+        item.save()
+        return response
+        # return Response(response)
+        # else:
+        #     response = HttpResponse(item.download_file, content_type='text/plain')
+        #     response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        #     item.downloads += 1
+        #     item.save()
+        #     return response
+
+    
 
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
@@ -23,9 +49,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
 
 class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
+    queryset = Item.objects.all().order_by('-timestamp')
     serializer_class = ItemSerializer
     lookup_field = 'slug'
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['item_type', 'is_free']
+    search_fields = ['title', 'tags__name']
 
     def retrieve(self, request, slug=None):
         item = get_object_or_404(self.queryset, slug=slug)

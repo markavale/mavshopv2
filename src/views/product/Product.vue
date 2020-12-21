@@ -43,7 +43,31 @@
               </div>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12" >
-          <v-breadcrumbs class="pb-0" :items="breadcrums"></v-breadcrumbs>
+          <v-breadcrumbs >
+              <v-breadcrumbs-item
+                :href="breadcrums[0].home.href.name"
+                :disabled="breadcrums[0].home.disabled"
+                class="mr-2"
+              >
+                {{ breadcrums[0].home.text.toUpperCase() }}
+              </v-breadcrumbs-item>
+              &nbsp;/&nbsp;
+              <v-breadcrumbs-item
+                :href="breadcrums[1].type.href.name"
+                :disabled="breadcrums[1].type.disabled"
+                class=""
+              >
+                 &nbsp;{{ breadcrums[1].type.text.toUpperCase() }}
+              </v-breadcrumbs-item>
+              &nbsp;/&nbsp;
+              <v-breadcrumbs-item
+                :href="{name: 'breadcrums[2].instance.href.name'}"
+                :disabled="breadcrums[2].instance.disabled"
+                class="ml-2"
+              >
+                 &nbsp;{{ breadcrums[2].instance.text.toUpperCase() }}
+              </v-breadcrumbs-item>
+          </v-breadcrumbs>
           <div class="pl-6">
             <v-card-actions class="pa-0">
               <v-rating
@@ -80,26 +104,34 @@
             <p class="subtitle-1 font-weight-normal">
               {{ prodItem.description }}
             </p>
-            <p class="title">SIZE</p>
-            <v-radio-group v-model="row" row>
+            <p class="title">File Details</p>
+            <p class="subtitle">
+               {{ prodItem.file.name }}( {{ prodItem.file.size }} )
+            </p>
+            <!-- <v-radio-group v-model="row" row>
               <v-radio label="XS" value="XS"></v-radio>
               <v-radio label="S" value="s"></v-radio>
               <v-radio label="M" value="m"></v-radio>
               <v-radio label="L" value="l"></v-radio>
               <v-radio label="XL" value="xl"></v-radio>
-            </v-radio-group>
-            <p class="title">ITEMS</p>
-
+            </v-radio-group> -->
+            <!-- <p class="title">ITEMS</p>
             <v-text-field
               outlined
               style="width: 100px"
               :value="1"
               dense
-            ></v-text-field>
+            ></v-text-field> -->
             <v-btn class="primary white--text" outlined tile dense
-            @click.prevent="addToCart(prodItem)"
-              ><v-icon>mdi-cart</v-icon> ADD TO CART</v-btn
-            >
+                @click.prevent="addToCart(prodItem)"
+                v-if="!prodItem.is_free"
+                  ><v-icon>mdi-cart</v-icon> ADD TO CART</v-btn
+                >
+                <v-btn class="primary white--text" outlined tile dense
+                @click.prevent="downloadItem(prodItem)"
+                v-else
+                  ><v-icon>mdi-download</v-icon> DOWNLOAD</v-btn
+                >
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -168,7 +200,7 @@
                 </v-list-item-group>
                 </div>
                 <div v-else>
-                  <p style="color:black;">no reviews!!</p>
+                  <p style="color:black;" class="text--center">no reviews!!</p>
                 </div>
               </v-list>
 
@@ -378,37 +410,30 @@ export default {
   data: () => ({
     rating: 4.5,
     product: {},
-    breadcrums: [
-      {
-        text: "Home",
-        disabled: false,
-        href: { name: "home" },
-      },
-      {
-        text: "Photoshop",
-        disabled: false,
-        href: { name: "shop" },
-      },
-      {
-        text: "Item Instance",
-        disabled: true,
-        href: "#test",
-      },
-    ],
+    breadcrums: {
+      // home:{
+      //   text: "Home",
+      //   disabled: false,
+      //   href: { name: "home" },
+      // },
+      // type:{
+      //   text: "" || null,
+      //   disabled: false,
+      //   href: { name: "shop" },
+      // },
+      // instance:{
+      //   text: "" || null,
+      //   disabled: true,
+      //   href: "#test",
+      // },
+    },
     item: 5,
     errors: [],
 
   }),
   mounted() {
-    // console.log(this.item, "testsetsetsetset");
-    // console.log(this.$route.params.slug);
     this.getItem();
   },
-  // props: {
-  //   item: {
-  //     type: Object,
-  //   },
-  // },
   computed: {
     // breadCrumbs() {
     //   let pathArray = this.$route.path.split("/");
@@ -453,6 +478,36 @@ export default {
         .get(`api/items/${this.$route.params.slug}/`)
         .then((res) => {
           this.product = res.data;
+          const pathLinks = [
+            {
+              home:{
+              text: "Home",
+              disabled: false,
+              href: { name: "home" },
+              },
+            },
+            {
+              type:{
+              text: res.data.item_type,
+              disabled: false,
+              href: { name: "shop" },
+              },
+            },
+            {
+              instance:{
+              text: res.data.slug,
+              disabled: true,
+              href: "#test",
+              },
+            }
+          ]
+          this.breadcrums = pathLinks
+          console.log(this.breadcrums)
+          console.log(this.breadcrums[1].type)
+          console.log(this.breadcrums[1].type.href)
+          console.log(this.breadcrums[1].type.text)
+          // this.breadcrums.type.text = res.data.item_type
+          // this.breadcrums.instance.text = res.data.slug
           console.log(res.data);
         })
         .catch((err) => {
@@ -473,6 +528,33 @@ export default {
       }
       
     },
+
+    downloadItem(prodItem){
+      axiosBase
+        .get(`api/items/${prodItem.slug}/download/`, {responseType: 'blob'})
+        .then((response)=>{
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${prodItem.file.name}`);
+          document.body.appendChild(link);
+          link.click();
+          this.$toast.success({
+            title: `${prodItem.file.name}`,
+            message: "Download Success!",
+            position: "top right",
+            closeButton: true,
+            timeOut: 3500,
+            showDuration: 500,
+            hideDuration: 500,
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+          });
+          console.log("download success")
+        })
+        .catch(err=>console.log(err));
+    },
+
     addToCart(prodItem) {
       axiosBase
         .post(`api/add-to-cart/${prodItem.slug}/`, prodItem, {
