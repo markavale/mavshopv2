@@ -28,7 +28,7 @@ class Item(models.Model):
     downloads           = models.PositiveIntegerField(default=0)
     views               = models.PositiveIntegerField(default=0)
     category            = models.ForeignKey('Categories',on_delete=models.CASCADE,related_name='item_categories')
-    reviews             = models.ManyToManyField('Review')
+    reviews             = models.ManyToManyField('Review', blank=True)
     tags                = TaggableManager()
     timestamp           = models.DateTimeField(auto_now_add=True)
 
@@ -86,7 +86,8 @@ class Categories(models.Model):
     category_name = models.CharField(max_length=255, blank=False, null=False)
     slug            = models.SlugField(unique=True, max_length=255)
     featured_image = models.ImageField(upload_to='featured_image',default='featured_image/default.jpg')
-    
+    category_type       = models.CharField(max_length=255, choices=ITEM_TYPE)
+
     class Meta:
         verbose_name_plural = "Categories"
 
@@ -188,8 +189,9 @@ class Order(models.Model):
         return self.items.count()
 
 class WishList(models.Model):
-    user            = models.ForeignKey(User, on_delete=models.CASCADE)
-    items           = models.ManyToManyField(Item)
+    user                = models.OneToOneField(User, on_delete=models.CASCADE)
+    items               = models.ManyToManyField(Item)
+    timestamp           = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username

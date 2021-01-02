@@ -3,8 +3,11 @@ from rest_framework import serializers
 import os
 from users.models import User
 # from django.conf import 
-from . models import (Item, Categories, OrderItem, Order,
-            WishList, Coupon, Payment, Review)
+from . models import (Item, Categories, OrderItem, Order, WishList
+            , Coupon, Payment, Review)
+from taggit_serializer.serializers import (TagListSerializerField,
+                                           TaggitSerializer)
+
 
 class UserReviews(serializers.ModelSerializer):
     class Meta:
@@ -17,11 +20,19 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = '__all__'
 
-class ItemSerializer(serializers.ModelSerializer):
+class CategoriesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Categories
+        fields = '__all__'
+
+class ItemSerializer(TaggitSerializer, serializers.ModelSerializer):
     total_reviews       = serializers.IntegerField(source='get_total_reviews', read_only=True)
     computed_review     = serializers.IntegerField(source='get_computed_reviews', read_only=True)
     file_name           = serializers.CharField(source='get_file_name', read_only=True)
     reviews             = ReviewSerializer(many=True, read_only=True)
+    category            = CategoriesSerializer(many=False, read_only=True)
+    tags = TagListSerializerField()
 
     class Meta:
         model = Item
@@ -81,13 +92,10 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
-class CategoriesSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Categories
-        fields = '__all__'
 
 class WishListSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = WishList

@@ -1,17 +1,19 @@
+from django.db.models import query
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import  viewsets, status
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 import string
 import random
 from . serializers import (ItemSerializer, OrderItemSerializer, OrderSerializer, CategoriesSerializer,
-                WishListSerializer, CouponSerializer, AddCouponSerializer, PaymentSerializer, ReviewSerializer)
+                 CouponSerializer, AddCouponSerializer, PaymentSerializer, ReviewSerializer, WishListSerializer)
 from . models import (Item, Categories, OrderItem, Order,
-            WishList, Coupon, Payment, Review)
+             Coupon, Payment, Review, WishList)
 import os
 from django.conf import settings
 from django.http import HttpResponse
@@ -36,12 +38,18 @@ def download_view(request, slug):
         #     response['Content-Disposition'] = 'attachment; filename=%s' % filename
         #     item.downloads += 1
         #     item.save()
-        #     return response
-
-    
+        #     return response   
 
 def create_ref_code():
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+
+class CatergoryView(ListAPIView):
+    queryset = Categories.objects.all().order_by('category_name')
+    serializer_class = CategoriesSerializer
+    permission_classes = [AllowAny]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category_type']
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
@@ -53,7 +61,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
     lookup_field = 'slug'
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['item_type', 'is_free']
+    filterset_fields = ['item_type', 'is_free', 'category']
     search_fields = ['title', 'tags__name']
 
     def retrieve(self, request, slug=None):
@@ -228,7 +236,7 @@ class PaymentView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        payment = Payment.objects
+        payment = Payment.objects.all()
         serializer = self.serializer_class(payment, many=True)
         return Response(serializer.data)
 
@@ -236,3 +244,71 @@ class PaymentView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+class WishListView(ListAPIView):
+    serializer_class = WishListSerializer
+    queryset = WishList.objects.all().order_by('-timestamp')
+    permission_classes = [IsAuthenticated,]
+
+    def list(self, request, *args, **kwargs):
+        #queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.queryset.filter(user=request.user)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+@permission_classes([IsAuthenticated,])
+@api_view(['POST', 'GET', ])
+def wish_list_add_or_remove(request, slug):
+    try:
+        item = Item.objects.get(slug=slug)
+    except Item.DoesNotExist:
+        data = {}
+        data['message'] = "Not found!!"
+        return Response(data,status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        print(item)
+        serializer = ItemSerializer(item)
+        return Response(serializer.data)
+
+    if request.method == "POST":
+        item = get_object_or_404(Item, slug=slug)
+        data = {}
+        # queryset = WishList.objects.all().order_by('-timestamp')
+        wish_qs = WishList.objects.filter(user=request.user)
+        print(wish_qs) 
+        # check if user does have an active wish list
+        if wish_qs.exists():
+            print("Executed inside of wish_qs if exists")
+            wish = wish_qs[0]
+            # check if wish item already in wish 
+            wish_obj = wish.items.filter(slug = item.slug)# if you define wish.items it means you're already have an access to the object itself
+            print(wish_obj)
+            if wish_obj.exists():
+                # if true remove item that already in wish list
+                wish.items.remove(item)
+                data['message'] = f"{item.title} was remove from your wish list."
+                print(f"{item.title} was remove from your wish list.")
+                return Response(data)
+            else:
+                # else add item to wish list
+                wish.items.add(item)
+                data['message'] = f"{item.title} was added to your wish list."
+                print(f"{item.title} was added to your wish list.")
+                return Response(data)
+        else:
+            print("Executed inside in else statement for uncreated yet..")
+            # else if user doesn't have active wish list create one
+            date_now = timezone.now()
+            wish = WishList.objects.create(user = request.user, timestamp = date_now)
+            wish.items.add(item)
+            wish.save()
+            data['message'] = f"{item.title} was added to your wish list."
+            print(f"{item.title} was added to your wish list.")
+            return Response(data)
+

@@ -1,15 +1,24 @@
 <template>
   <div style="z-index:10000">
-    <v-app-bar color="#ffffff" fixed hide-on-scroll id="nav__header"> 
+    <v-app-bar color="#ffffff" fixed hide-on-scroll id="nav__header"
+    > 
+    <!-- prominent
+    height="115px;" -->
       <div class="brand-logo-container">
         <v-img src="@/assets/img/logo.png" class="brand-logo"></v-img>
-      </div>
-      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-      
-      <v-toolbar-title class="headline">eMav test</v-toolbar-title>
-
+      </div>   
+      <v-toolbar-title class="headline">eMav</v-toolbar-title>
+      <!-- <h1 class="brand__name">eMav Shop</h1>
+      <v-toolbar-title class="shop__links" style="font-size:20px;">Photoshop</v-toolbar-title>
+      <v-toolbar-title class="shop__links" style="font-size:20px;">Lightroom</v-toolbar-title>       -->
       <v-spacer></v-spacer>
-
+      <!-- <template v-slot:extension >
+        <v-tabs align-with-title>
+          <v-tab>Tab 1</v-tab>
+          <v-tab>Tab 2</v-tab>
+          <v-tab>Tab 3</v-tab>
+        </v-tabs>
+      </template> -->
       <v-btn 
       icon
       class="icon-link"
@@ -74,38 +83,12 @@
               </router-link>
             </v-list-item-group>
           </v-list>
-          <!-- <v-list rounded>
-            <v-subheader>Hello, {{ getUsers.username }}</v-subheader>
-            <v-list-item-group v-model="selectedItem" color="primary">
-              <v-list-item v-for="(item, i) in items" :key="i" :to="item.href" class="no_underline">
-                <v-list-item-icon>
-                  <v-icon v-text="item.icon"></v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.text"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list> -->
         </v-card>
-
-        <!-- <v-list>
-          <v-list-item>
-          <v-list-item-title>
-              <router-link :to="{ name: 'login' }" class="nav-link"
-              >Profile</router-link>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-          <v-list-item-title>
-              <router-link :to="{ name: 'login' }" class="nav-link"
-              >Profile</router-link>
-            </v-list-item-title>
-          </v-list-item>
-        </v-list> -->
       </v-menu>
        <CartItems />
+      
     </v-app-bar>
+    
   </div>
 </template>
         
@@ -163,5 +146,18 @@ export default {
 }
 #nav__header{
   z-index:10001;
+}
+.brand__name{
+  padding-top:12px;
+  font-size:1.8rem;
+  font-weight: 500;
+}
+.shop__links{
+  text-align:center;
+  font-size:14px;
+  color:black;
+  font-weight: 350;
+  margin:0 8px;
+  padding:0;
 }
 </style>

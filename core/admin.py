@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (Item, OrderItem, Order, Coupon, Categories,
-        Payment, Review
+        Payment, Review, WishList
 #Payment
 #UserProfile
 #Address
@@ -62,7 +62,7 @@ admin.site.register(Categories, CategoryAdmin)
 admin.site.register(Payment)
 admin.site.register(Coupon)      
 admin.site.register(Review)  
-
+admin.site.register(WishList)
 #admin.site.register(UserProfile)   
 
 admin.site.site_header= 'eMav Admin'

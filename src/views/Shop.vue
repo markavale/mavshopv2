@@ -1,23 +1,55 @@
 <template>
   <div>
     <Header />
-    <v-container>
+    <div style="height: 60px"></div>
+    <v-container fluid>
       <div class="row">
         <div class="col-md-3 col-sm-3 col-xs-12">
           <v-card outlined>
             <v-card-title>Filters</v-card-title>
             <v-divider></v-divider>
-            <template>
-              <v-treeview
-                :items="items"
-                :open="[1]"
-                :active="[5]"
-                :selected-color="'#fff'"
-                activatable
-                open-on-click
-                dense
-              ></v-treeview>
-            </template>
+            <v-list>
+              
+              <v-list-group>
+              <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title>Lightroom</v-list-item-title>
+                  </v-list-item-content>
+              </template>
+              <div>
+              <v-list-item
+                v-for="category in lightroomCategories"
+                :key="category.id"
+                class="categoryItem"
+              >
+                <!-- <v-btn> -->
+                  <v-list-item-content  @click.prevent="categoryName(category.id)">
+                  <v-list-item-title>{{ category.category_name }}</v-list-item-title>
+                </v-list-item-content>
+                <!-- </v-btn> -->
+              </v-list-item>
+              </div>
+              </v-list-group>
+
+               <v-list-group>
+              <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title>Photoshop</v-list-item-title>
+                  </v-list-item-content>
+              </template>
+              <div>
+              <v-list-item
+                v-for="category in photoshopCategories"
+                :key="category.id"
+                class="categoryItem"
+              >
+                <v-list-item-content  @click.prevent="categoryName(category.id)">
+                  <v-list-item-title>{{ category.category_name }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              </div>
+              </v-list-group>
+            </v-list>
             <v-divider></v-divider>
             <v-card-title>Price</v-card-title>
             <v-range-slider
@@ -338,6 +370,23 @@
                 <p class="subtitle-1 font-weight-normal" color="">
                   {{ prodItem.description }}
                 </p>
+                <!-- <p class="title">
+                  Tags
+                </p> -->
+
+                <div class="text-left">
+                  feawfawef
+                  <v-chip
+                  class="ma-2"
+                  color="#15314b"
+                  label
+                  text-color="white"
+                  default
+                  v-for="tag in prodItem.tags" :key="tag.id"
+                  >
+                  {{ tag }}
+                  </v-chip>
+                </div>
                 <!-- <p class="title">SIZE</p>
                 <v-radio-group v-model="row" row>
                   <v-radio label="XS" value="XS"></v-radio>
@@ -364,7 +413,7 @@
                 v-else
                   ><v-icon>mdi-download</v-icon> DOWNLOAD</v-btn
                 >
-                <v-tooltip bottom>
+                <v-tooltip bottom >
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       class="ml-4"
@@ -373,6 +422,7 @@
                       dense
                       v-bind="attrs"
                       v-on="on"
+                      @click.prevent="wishList(prodItem)"
                     >
                       <v-icon>mdi-heart</v-icon>
                     </v-btn>
@@ -395,6 +445,18 @@
                 View full details >>
                 </router-link>
               </span>
+              <div class="tags text-left">
+                  <v-chip
+                  class="ma-2"
+                  color="#15314b"
+                  label
+                  text-color="white"
+                  default
+                  v-for="tag in prodItem.tags" :key="tag.id"
+                  >
+                  {{ tag }}
+                  </v-chip>
+                </div>
               <!-- </div> -->
             </v-col>
           </v-row>
@@ -412,6 +474,7 @@ import { axiosBase } from "@/api/axiosConfig";
 import { mapGetters } from "vuex";
 export default {
   data: () => ({
+    shop_items: [],
     prodItem: {},
     showQuickView: false,
     dialog: false,
@@ -445,38 +508,69 @@ export default {
     min: 0,
     max: 10000,
     items: [
-      {
-        id: 2,
-        name: "Photoshop",
-        children: [
-          { id: 2, name: "All" },
-          { id: 3, name: "Logo" },
-          { id: 4, name: "Certificate" },
-          { id: 5, name: "Shirt" },
-        ],
-      },
-      {
-        id: 1,
-        name: "Lightroom",
-        children: [
-          { id: 5, name: "All" },
-          { id: 6, name: "Moody Dark" },
-          { id: 7, name: "Cinematic" },
-          { id: 8, name: "Color Pop" },
-          { id: 9, name: "Dark" },
-        ],
-      },
-    ],
+        {
+          action: 'mdi-ticket',
+          items: [{ title: 'List Item' }],
+          title: 'Attractions',
+        },
+        {
+          action: 'mdi-silverware-fork-knife',
+          active: true,
+          items: [
+            { title: 'Breakfast & brunch' },
+            { title: 'New American' },
+            { title: 'Sushi' },
+          ],
+          title: 'Dining',
+        },
+        {
+          action: 'mdi-school',
+          items: [{ title: 'List Item' }],
+          title: 'Education',
+        },
+        {
+          action: 'mdi-run',
+          items: [{ title: 'List Item' }],
+          title: 'Family',
+        },
+        {
+          action: 'mdi-bottle-tonic-plus',
+          items: [{ title: 'List Item' }],
+          title: 'Health',
+        },
+        {
+          action: 'mdi-content-cut',
+          items: [{ title: 'List Item' }],
+          title: 'Office',
+        },
+        {
+          action: 'mdi-tag',
+          items: [{ title: 'List Item' }],
+          title: 'Promotions',
+        },
+      ],
     pageLoading: false,
+    categories: [],
+    lightroom_category: [],
+    photoshop_category: []
   }),
   mounted() {
     this.getAllItems();
     this.loadPage();
+    this.getCategories();
   },
 
   computed: {
-    ...mapGetters(["getItems"]),
-    
+    ...mapGetters(["getItems", 'getWishLists']),
+    itemCategories(){
+      return this.categories
+    },
+    photoshopCategories(){
+      return this.photoshop_category
+    },
+    lightroomCategories(){
+      return this.lightroom_category
+    },
   },
 
   created() {},
@@ -504,10 +598,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-    // incrementView(item){
-    //   axiosBase
-    //   .post(`api/items/${item.slug}/`,item)
-    // },
     downloadItem(prodItem){
       axiosBase
         .get(`api/items/${prodItem.slug}/download/`, {responseType: 'blob'})
@@ -581,8 +671,68 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    categoryName(category){
+      console.log(category)
+      this.$store.dispatch('filterItems', category)
+      console.log("Dispatchingg.....")
+      console.log(this.getItems)
+      console.log("-------------------")
+      // this.loadPage();
+
+    },
+    getCategories(){
+      axiosBase
+      .get('api/items/categories/')
+      .then(res => {
+        this.categories = res.data
+        this.getPhotoshop()
+        this.getLightroom()
+        console.log(res.data)
+      })
+      .catch(err=>console.log(err))
+    },
+    getPhotoshop(){
+      axiosBase
+      .get('api/items/categories/?category_type=Photoshop')
+      .then(res => {
+        this.photoshop_category = res.data
+        console.log(this.photoshop_category)
+      })
+      .catch(err=>console.log(err))
+    },
+    getLightroom(){
+      axiosBase
+      .get('api/items/categories/?category_type=Lightroom')
+      .then(res => {
+        this.lightroom_category = res.data
+        console.log(this.lightroom_category)
+      })
+      .catch(err=>console.log(err))
+    },
     getAllItems() {
       this.$store.dispatch("fetchItems");
+    },
+    wishList(payload){
+      console.log("CLicked!!!")
+      console.log(this.getWishLists)
+      axiosBase
+      .post(`api/wish-list/${payload.slug}/`,{}, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+      })
+      .then(res=>{
+        console.log(res.data)
+        
+      })
+      .catch(err=>{
+        console.log(err)
+        console.log(err.response.data)
+      })
+      // this.$store.dispatch('addRemoveWishList', payload)
+      console.log(this.getWishLists)
+      console.log("end of wish list listener")
     },
   },
 };
@@ -618,5 +768,16 @@ export default {
 }
 #quickViewDialog{
   z-index:10002;
+}
+/* .tags{
+  margin:0 0 30px 0;
+  padding: 8px;
+  background-color:#fff;
+} */
+.categoryItem{
+  padding-left: 3rem;
+}
+.categoryItem:hover{
+  background-color:rgba(235, 235, 235, 0.5);
 }
 </style>
