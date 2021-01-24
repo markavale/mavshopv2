@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
 import Logout from '@/components/auth/Logout'
@@ -10,16 +9,6 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: Home,
-        meta: {
-            requiresAuth: false,
-            title: 'Mark Anthony Vale'
-            
-        }
-    },
-    {
-        path: '/index',
         name: 'index',
         component: () =>
             import ( /* webpackChunkName: "index" */ '../views/Index.vue'),
@@ -28,7 +17,6 @@ const routes = [
             title: 'Index',
             breadCrumb: 'Home'
         }
-
     },
     {
         path: '/:itemType/:slug',
@@ -65,6 +53,29 @@ const routes = [
             breadCrumb: 'Item Type'
         }
 
+    },
+    {
+        path: '/order-summary',
+        name: 'order-summary',
+        component: () =>
+            import ( /* webpackChunkName: "order-summary" */ '../views/OrderSummary.vue'),
+        meta: {
+            requiresAuth: false,
+            title: 'Orders Summary',
+            breadCrumb: 'Order Summary'
+        }
+
+    },
+    {
+        path: '/wish-list',
+        name: 'wish-list',
+        component: () =>
+            import ( /* webpackChunkName: "wish-list" */ '../views/accounts/WishList.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'My Wish List',
+            breadCrumb: 'Item Type'
+        }
     },
     {
         path: '/about',

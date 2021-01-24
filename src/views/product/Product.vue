@@ -1,10 +1,31 @@
 <template>
   <div style="background-color:#ffffff;">
     <Header />
-    <div style="height: 60px"></div>
     <v-container >
       <div class="row" v-if="prodItem">
-        <div class="col-md-6 col-sm-6 col-xs-12" v-if="prodItem.item_type == 'Photoshop'">
+        <div class="col-md-6 col-sm-6 col-xs-12" v-if="prodItem.item_type == 'Lightroom'">
+          <div class="twenty-container">
+                <TwentyTwenty
+                 
+                  :before="prodItem.old_img"
+                  :after="prodItem.new_img"
+                  beforeLabel="Before"
+                  afterLabel="After"
+                />
+                <!-- <v-row
+                  class="fill-height ma-0"
+                  align="center"
+                  justify="center"
+                  v-else
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="#15314b"
+                  ></v-progress-circular>
+                </v-row> -->
+              </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12" v-else>
           <v-img :src="prodItem.new_img" width="100%" height="auto" >
                 <template v-slot:placeholder>
                   <v-row
@@ -20,34 +41,13 @@
                 </template>
               </v-img>
         </div>
-        <div class="col-md-6 col-sm-6 col-xs-12" v-else>
-          <div class="twenty-container">
-                <TwentyTwenty
-                  v-if="prodItem.new_img"
-                  :before="prodItem.old_img"
-                  :after="prodItem.new_img"
-                  beforeLabel="Before"
-                  afterLabel="After"
-                />
-                <v-row
-                  class="fill-height ma-0"
-                  align="center"
-                  justify="center"
-                  v-else
-                >
-                  <v-progress-circular
-                    indeterminate
-                    color="#15314b"
-                  ></v-progress-circular>
-                </v-row>
-              </div>
-        </div>
+        
         <div class="col-md-6 col-sm-6 col-xs-12" >
-          <v-breadcrumbs >
+          <!-- <v-breadcrumbs class="product__breadcrumbs">
               <v-breadcrumbs-item
                 :href="breadcrums[0].home.href.name"
                 :disabled="breadcrums[0].home.disabled"
-                class="mr-2"
+                class="mr-2 product__breadcrumbs"
               >
                 {{ breadcrums[0].home.text.toUpperCase() }}
               </v-breadcrumbs-item>
@@ -55,7 +55,7 @@
               <v-breadcrumbs-item
                 :href="breadcrums[1].type.href.name"
                 :disabled="breadcrums[1].type.disabled"
-                class=""
+                class="product__breadcrumbs"
               >
                  &nbsp;{{ breadcrums[1].type.text.toUpperCase() }}
               </v-breadcrumbs-item>
@@ -63,11 +63,11 @@
               <v-breadcrumbs-item
                 :href="{name: 'breadcrums[2].instance.href.name'}"
                 :disabled="breadcrums[2].instance.disabled"
-                class="ml-2"
+                class="ml-2 product__breadcrumbs"
               >
                  &nbsp;{{ breadcrums[2].instance.text.toUpperCase() }}
               </v-breadcrumbs-item>
-          </v-breadcrumbs>
+          </v-breadcrumbs> -->
           <div class="pl-6">
             <v-card-actions class="pa-0">
               <v-rating
@@ -106,7 +106,7 @@
             </p>
             <p class="title">File Details</p>
             <p class="subtitle">
-               {{ prodItem.file.name }}( {{ prodItem.file.size }} )
+               {{ prodItem.item_name }}( {{ prodItem.item_size }} )
             </p>
             <!-- <v-radio-group v-model="row" row>
               <v-radio label="XS" value="XS"></v-radio>
@@ -133,20 +133,22 @@
                   ><v-icon>mdi-download</v-icon> DOWNLOAD</v-btn
                 >
             <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  class="ml-4"
-                  outlined
-                  tile
-                  dense
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon>mdi-heart</v-icon>
-                </v-btn>
-              </template>
-              <span>Add to wishlist</span>
-            </v-tooltip>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    class="ml-4"
+                    outlined
+                    tile
+                    dense
+                    v-bind="attrs"
+                    v-on="on"
+                    @click.prevent="wishList(prodItem)"
+                  >
+                    <v-icon medium :class="getWishStatus?'red--text':''">mdi-heart</v-icon>
+                  </v-btn>
+                </template>
+                <span v-if="getWishStatus">Remove from wishlist</span>
+                <span v-else>Add to wishlist</span>
+              </v-tooltip>
           </div>
         </div>
       </div>
@@ -406,7 +408,9 @@ import { axiosBase } from "@/api/axiosConfig";
 import Header from "@/components/Header";
 import "vue-twentytwenty/dist/vue-twentytwenty.css";
 import TwentyTwenty from "vue-twentytwenty";
+import { mapGetters } from 'vuex';
 export default {
+  name: 'Product',
   data: () => ({
     rating: 4.5,
     product: {},
@@ -433,6 +437,7 @@ export default {
   }),
   mounted() {
     this.getItem();
+    
   },
   computed: {
     // breadCrumbs() {
@@ -463,9 +468,11 @@ export default {
     //   }
     //   return breadCrumbs;
     // },
-    prodItem() {
-      return this.product;
-    },
+    ...mapGetters(['getWishStatus', 'prodItem',]),
+    // prodItem() {
+    //   return this.product;
+    // },
+
   },
   components: {
     Header,
@@ -474,57 +481,8 @@ export default {
   methods: {
     getItem() {
       if(this.$route.params.slug){
-        axiosBase
-        .get(`api/items/${this.$route.params.slug}/`)
-        .then((res) => {
-          this.product = res.data;
-          const pathLinks = [
-            {
-              home:{
-              text: "Home",
-              disabled: false,
-              href: { name: "home" },
-              },
-            },
-            {
-              type:{
-              text: res.data.item_type,
-              disabled: false,
-              href: { name: "shop" },
-              },
-            },
-            {
-              instance:{
-              text: res.data.slug,
-              disabled: true,
-              href: "#test",
-              },
-            }
-          ]
-          this.breadcrums = pathLinks
-          console.log(this.breadcrums)
-          console.log(this.breadcrums[1].type)
-          console.log(this.breadcrums[1].type.href)
-          console.log(this.breadcrums[1].type.text)
-          // this.breadcrums.type.text = res.data.item_type
-          // this.breadcrums.instance.text = res.data.slug
-          console.log(res.data);
-        })
-        .catch((err) => {
-          this.errors = [];
-          console.log(err);
-          console.log(err.response.data);
-          this.errorMessage = err.response.data;
-          let error_data = err.response.data;
-          console.log(error_data);
-          for (const field_error in error_data) {
-            this.errors.push(error_data[field_error]);
-          }
-          console.log(this.errors)
-        });
-      }
-      else{
-        console.log("ERRRRRRRRR!!!!")
+        this.$store.dispatch('retrieveItem', this.$route.params.slug)
+          this.checkWishStatus(this.$route.params.slug);
       }
       
     },
@@ -603,6 +561,31 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    checkWishStatus(payload){
+          this.$store.dispatch('checkWishStatus', payload)
+      },
+
+    wishList(payload){
+      console.log("CLicked!!!")
+      axiosBase
+      .post(`api/wish-list/${payload.slug}/`,{}, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+      })
+      .then(res=>{
+        console.log(res.data)
+        this.$store.dispatch('checkWishStatus', payload.slug)
+        this.$store.dispatch('fetchWishLists')
+        
+      })
+      .catch(err=>{
+        console.log(err)
+        console.log(err.response.data)
+      })
+    },
   },
 };
 </script>
@@ -616,5 +599,8 @@ export default {
 .computed__rating{
   /* background-color:rgba(25, 118, 210,0.2); */
   background-color:#f5f5f5;
+}
+.product__breadcrumbs{
+  font-size:10px;
 }
 </style>

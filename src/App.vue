@@ -110,4 +110,9 @@ html {
   width: 100%;
   opacity: 0.9;
 }
+// .sticky__scroll{
+//   position: -webkit-sticky;
+//   position: sticky;
+//   top: 0;
+// }
 </style>

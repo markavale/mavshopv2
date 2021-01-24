@@ -1,4 +1,5 @@
 from django.db.models import query
+from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
@@ -10,15 +11,22 @@ from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 import string
 import random
-from . serializers import (ItemSerializer, OrderItemSerializer, OrderSerializer, CategoriesSerializer,
-                 CouponSerializer, AddCouponSerializer, PaymentSerializer, ReviewSerializer, WishListSerializer)
-from . models import (Item, Categories, OrderItem, Order,
+from core.serializers import (ItemSerializer, OrderItemSerializer, OrderSerializer, CategoriesSerializer,
+                 CouponSerializer, AddCouponSerializer, PaymentSerializer, ReviewSerializer, WishListSerializer,
+                 WishRetrieveSerializer,)
+from core.models import (Item, Categories, OrderItem, Order,
              Coupon, Payment, Review, WishList)
-import os
-from django.conf import settings
+# import os
+# from django.conf import settings
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+
+# DRY: get request use order
+def get_user_orders(request, user, ordered):
+    order_qs = Order.objects.filter(user=user, ordered=ordered)
+    return order_qs
+
 
 # @permission_classes([AllowAny])
 # @api_view(['GET', ])
@@ -83,11 +91,13 @@ class ItemViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
 class OrderItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     lookup_field = 'id'
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        queryset = OrderItem.objects.filter(user = self.request.user)
+        return queryset
     
 
     # def get_permissions(self):
@@ -102,24 +112,39 @@ class OrderItemViewSet(viewsets.ModelViewSet):
 
 
 class OrdersViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    # queryset = Order.objects.all()
     serializer_class = OrderSerializer
     lookup_field = 'id'
     permission_classes = [AllowAny]
 
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
     def list(self, request, *args, **kwargs):
-        order_qs = Order.objects.filter(ordered=False, user= self.request.user)
-        if order_qs:
-            order = order_qs[0]
-            # coupon = order.coupon
-            if order.items.count() == 0:
-                if order.coupon:
-                    order.coupon = None
-                    order.save()
-                    print(order.coupon)
+        # order_qs = Order.objects.filter(ordered=False, user= self.request.user)
+        # if order_qs:
+        #     order = order_qs[0]
+        #     # coupon = order.coupon
+        #     if order.items.count() == 0:
+        #         if order.coupon:
+        #             order.coupon = None
+        #             order.save()
+        #             print(order.coupon)
         return super().list(request, *args, **kwargs)
 
-    
+    def get_permissions(self):
+    # """
+    # Instantiates and returns the list of permissions that this view requires.
+    # """
+        if self.action == 'list':
+            permission_classes = [IsAuthenticated]
+        elif self.action == 'retrieve':
+            permission_classes = [IsAuthenticated] # AllowAny
+        elif self.action == 'create':
+            permission_classes = [AllowAny] # AllowAny
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
 
 
 @permission_classes([IsAuthenticated])
@@ -140,12 +165,14 @@ def add_to_cart(request, slug):
         if order.items.filter(item__slug=item.slug).exists():
             data['message'] = f'{item.title} was already added to your cart.'
             data['type'] = 'info'
+            data['color'] = 'blue'
             print(f'{item.title} was already added to your cart.')
             return Response(data)
         else:
             order.items.add(order_item)
             data['message'] = f'{item.title} was added to your cart.'
             data['type'] = 'success'
+            data['color'] = 'green'
             print(f'{item.title} was added to your cart.')
             return Response(data)
     else:
@@ -200,6 +227,40 @@ def get_coupon(request, code):
         data = {}
         data['message'] = 'This coupon does not exist.'
         return Response(data)
+
+@permission_classes([IsAuthenticated])
+@api_view(['POST', ])
+def apply_coupon(request, id):
+    try:
+        coupon = Coupon.objects.get(id=id)
+        order_qs = get_user_orders(request, user=request.user, ordered=False)
+        data = {}
+        if order_qs.exists():
+            order = order_qs[0]
+            order.add_coupon(coupon)
+            data['message'] = "Coupon applied"
+            return Response(data)
+        
+    except Coupon.DoesNotExist:
+        return Response({'message': 'Coupon does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+@permission_classes([IsAuthenticated])
+@api_view(['POST', ])
+def remove_coupon(request):
+    try:
+        order_qs = get_user_orders(request, user=request.user, ordered=False)
+        data = {}
+        if order_qs.exists():
+            order = order_qs[0]
+            order.remove_coupon()
+            data['message'] = "Coupon was successfully removed."
+            return Response(data)
+        else:
+            data['message'] = "You don't have active coupon."
+            return Response(data)
+
+    except Coupon.DoesNotExist:
+        return Response({'message': 'Coupon does not exist.'}, status=status.HTTP_404_NOT_FOUND)    
 
 class AddCouponView(APIView):
     serializer_class = AddCouponSerializer
@@ -266,6 +327,8 @@ class WishListView(ListAPIView):
 def wish_list_add_or_remove(request, slug):
     try:
         item = Item.objects.get(slug=slug)
+        data = {}
+        wish_qs = WishList.objects.filter(user=request.user).order_by('-timestamp')
     except Item.DoesNotExist:
         data = {}
         data['message'] = "Not found!!"
@@ -273,14 +336,23 @@ def wish_list_add_or_remove(request, slug):
 
     if request.method == 'GET':
         print(item)
-        serializer = ItemSerializer(item)
-        return Response(serializer.data)
+        if wish_qs.exists():
+            wish = wish_qs[0]
+            wish_instance = wish.items.filter(slug = item.slug)
+            if wish_instance.exists():
+                data['isWish'] = True
+                return Response(data)
+            else:
+                data['isWish'] = False
+                return Response(data)
+        else:
+            data['isWish'] = False
+            return Response(data)
 
     if request.method == "POST":
-        item = get_object_or_404(Item, slug=slug)
-        data = {}
-        # queryset = WishList.objects.all().order_by('-timestamp')
-        wish_qs = WishList.objects.filter(user=request.user)
+        # item = get_object_or_404(Item, slug=slug)
+        # data = {}
+        # wish_qs = WishList.objects.filter(user=request.user).order_by('-timestamp')
         print(wish_qs) 
         # check if user does have an active wish list
         if wish_qs.exists():

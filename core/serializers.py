@@ -30,6 +30,7 @@ class ItemSerializer(TaggitSerializer, serializers.ModelSerializer):
     total_reviews       = serializers.IntegerField(source='get_total_reviews', read_only=True)
     computed_review     = serializers.IntegerField(source='get_computed_reviews', read_only=True)
     file_name           = serializers.CharField(source='get_file_name', read_only=True)
+    item_price          = serializers.IntegerField(source = 'get_price', read_only=True)
     reviews             = ReviewSerializer(many=True, read_only=True)
     category            = CategoriesSerializer(many=False, read_only=True)
     tags = TagListSerializerField()
@@ -54,21 +55,13 @@ class ItemSerializer(TaggitSerializer, serializers.ModelSerializer):
             size = str(size_kb) + "Kb"
         else:
             size = str(size_byte) + "Byte"
-        
-        file = {
-            # "size_byte": size_byte,
-            # "size_kb": size_kb,
-            # "size_mb": size_mb,
-            # "size_gb": size_gb,
-            "size": size,
-            "name": instance.get_file_name(), # referring to class method in models.py
-            "download_url": instance.get_download_url()
-        }
-        representation['file'] = file
+
+        representation['item_size'] = size
+        representation["item_name"] = instance.get_file_name()
+        representation["download_url"] = instance.get_file_name()
         return representation
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    # item = serializers.CharField(read_only=True)
     item = ItemSerializer(many=False, read_only=False)
 
     class Meta:
@@ -95,6 +88,14 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class WishListSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, read_only=True)
+    total_items = serializers.IntegerField(source = 'get_total_items', read_only=True)
+    
+    class Meta:
+        model = WishList
+        fields = '__all__'
+
+class WishRetrieveSerializer(serializers.ModelSerializer):
     items = ItemSerializer(many=True, read_only=True)
 
     class Meta:
