@@ -1,6 +1,7 @@
 <template>
   <div class="text-center">
-    <v-menu
+    <router-link style="text-decoration:none;" :to="{name: 'order-summary'}">
+      <v-menu
       v-model="menu"
       bot
       :nudge-width="200"
@@ -10,11 +11,11 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn v-bind="attrs" v-on="on" icon :color="menu ? 'primary' : ''"
-         v-if="getOrders  == 0 || getOrders[0].items == 0">
+         v-if="getOrderItems.length == 0">
             <v-icon>mdi-cart</v-icon>
           </v-btn>
         <v-btn v-bind="attrs" icon v-on="on" :color="menu ? 'primary' : ''" v-else>
-            <div v-for="order in getOrders[0]" :key="order.id">
+            <div v-for="order in getOrders" :key="order.id">
               <v-badge :content="order.total_items" color="error" v-if="order.total_items != 0">
             <v-icon>mdi-cart</v-icon>
              </v-badge>
@@ -22,7 +23,7 @@
             </div>
         </v-btn>
       </template>
-      <v-card class="pa-5" v-if="getOrders[0] == 0">
+      <v-card class="pa-5" v-if="getOrderItems.length == 0">
         <v-img
           src="@/assets/img/emptyCart.png"
           min-height="auto"
@@ -31,8 +32,8 @@
         >
         </v-img>
       </v-card>
-      <div v-for="cart in getOrders[0]" :key="cart.id" v-else>
-        <v-card class="pa-5" v-if="cart.total_items == 0">
+      <!-- <div v-for="cart in getOrders" :key="cart.id" v-else> -->
+        <!-- <v-card class="pa-5" v-if="cart.total_items == 0">
           <v-img
             src="@/assets/img/emptyCart.png"
             min-height="auto"
@@ -40,10 +41,10 @@
             width="300px"
           >
           </v-img>
-        </v-card>
+        </v-card> -->
 
-        <v-card width="350px" v-if="cart.total_items != 0">
-          <v-list v-for="order in getOrders[0]" :key="order.id">
+        <v-card width="350px" v-else>
+          <v-list v-for="order in getOrders" :key="order.id">
             <v-list-item
               v-for="orderItem in order.items"
               :key="orderItem.id"
@@ -130,18 +131,10 @@
             >
           </v-card-actions>
         </v-card>
-      </div>
+      <!-- </div> -->
     </v-menu>
-
-    <!-- <v-hover v-slot="{ hover }">
-      <div>
-        <v-btn icon :color="hover ? 'primary' : ''">
-        <v-icon>mdi-cart</v-icon>
-      </v-btn>
-      
-
-      </div>
-    </v-hover> -->
+    </router-link>
+    
   </div>
 </template>
 
@@ -160,7 +153,10 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(["getOrders"]),
+    ...mapGetters(["getOrders", 'getOrderItems',]),
+    
+
+
   },
   watch: {
     watchMenu() {
@@ -173,6 +169,11 @@ export default {
   methods: {
     getUserOrders() {
       this.$store.dispatch("fetchOrders");
+      this.$store.dispatch('fetchOrderItems')
+      console.log(this.getOrderItems)
+      console.log("-------")
+      console.log(this.getOrders)
+      console.log(this.getOrders.length)
     },
     removeFromCart(slug) {
       axiosBase

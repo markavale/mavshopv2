@@ -46,12 +46,12 @@ class Item(models.Model):
     def get_total_reviews(self):
         return int(self.reviews.count())
 
-    # def get_price(self):
-    #     if self.is_free:
-    #         return 0
-    #     if self.discount_price:
-    #         return self.discount_price
-    #     return self.price
+    def get_price(self):
+        if self.is_free:
+            return 0
+        if self.discount_price:
+            return self.discount_price
+        return self.price
 
     def get_file_name(self):
         return self.download_file.name.split('/')[-1]
@@ -65,8 +65,6 @@ class Item(models.Model):
         return reverse('download-file', kwargs={
             'slug':self.slug
         })
-
-    
 
     def save(self, *args, **kwargs): # new
         if not self.slug:
@@ -124,17 +122,11 @@ class OrderItem(models.Model):
     user                = models.ForeignKey(User, on_delete=models.CASCADE)
     is_ordered         = models.BooleanField(default=False)
     item                = models.ForeignKey(Item, on_delete=models.CASCADE)
+    is_selected         = models.BooleanField(default=True)
     # quantity        = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.item}"
-
-    def get_total_price(self):
-        if self.item.is_free:
-            return 0
-        if self.item.discount_price:
-            return self.item.discount_price
-        return self.item.price
 
 class Order(models.Model):
     user                    = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -144,7 +136,8 @@ class Order(models.Model):
     ordered_date            = models.DateTimeField(null=True, blank=True)
     ordered                 = models.BooleanField(default=False)  
     coupon                  = models.ForeignKey('Coupon',blank=True, null=True, 
-    on_delete=models.SET_NULL) 
+    on_delete=models.SET_NULL)
+    use_coupon              = models.BooleanField(default=False) 
     purchased               = models.BooleanField(default=False)
     refund_requested        = models.BooleanField(default=False)
     refund_granted          = models.BooleanField(default=False)
@@ -174,19 +167,30 @@ class Order(models.Model):
     def get_sub_total(self):
         total = 0
         for order_item in self.items.all():
-            total += order_item.get_total_price()
+            total += order_item.item.get_price()
         return total
 
     def get_total(self):
         total = 0
-        for order_item in self.items.all():
-            total += order_item.get_total_price()
-        if self.coupon:    
+        for order_item in self.items.filter(is_selected=True):
+            total += order_item.item.get_price()
+        if self.coupon and self.use_coupon:
             total -= self.coupon.amount
         return total
     
     def get_total_items(self):
         return self.items.count()
+
+    def add_coupon(self, coupon):
+        self.coupon = coupon
+        self.use_coupon = True
+        self.save()
+
+    def remove_coupon(self):
+        self.use_coupon = False
+        self.coupon = None
+        self.save()
+
 
 class WishList(models.Model):
     user                = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -202,6 +206,7 @@ class WishList(models.Model):
 class Coupon(models.Model):
     code            = models.CharField(max_length=255)
     amount          = models.FloatField()
+    
 
     def __str__(self):
         return self.code

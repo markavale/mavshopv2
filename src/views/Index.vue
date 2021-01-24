@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <v-carousel hide-delimiters>
       <v-carousel-item
         :src="require('../assets/img/home/slider4.jpg')"
@@ -343,6 +344,7 @@
 </template>
 
 <script>
+    import Header from "@/components/Header"
     export default {
         data () {
             return {
@@ -368,6 +370,9 @@
                     'Fifth',
                 ],
             }
+        },
+        components: {
+          Header,
         },
     }
 </script>

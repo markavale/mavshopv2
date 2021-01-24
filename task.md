@@ -7,8 +7,10 @@
 [x] remove from cart
 
 [] checkout
-[X] crud coupon
-[x] add coupon for cart
+[x] coupon
+    - coupon logic
+    - coupon add and delete to order discount
+    - coupon disable coupon to order
 [] payment (stripe)
 
 [] refund

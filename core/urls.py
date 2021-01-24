@@ -1,13 +1,14 @@
 from django.urls import path#, include
-from . views import (ItemViewSet, OrderItemViewSet, OrdersViewSet, add_to_cart,
+from core.views.user import (ItemViewSet, OrderItemViewSet, OrdersViewSet, add_to_cart,
             remove_from_cart, AddCouponView, CouponViewSet, PaymentView, ReviewViewSet,
-            download_view, CatergoryView, WishListView, wish_list_add_or_remove)
+            download_view, CatergoryView, WishListView, wish_list_add_or_remove,
+            apply_coupon, remove_coupon)
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register('items', ItemViewSet),
-router.register('order-items', OrderItemViewSet),
-router.register('orders', OrdersViewSet),
+router.register('order-items', OrderItemViewSet, basename='OrderItem'),
+router.register('orders', OrdersViewSet, basename='Order'),
 router.register('coupons', CouponViewSet),
 router.register('reviews', ReviewViewSet),
 
@@ -24,6 +25,8 @@ urlpatterns = [
     path('wish-list/<slug>/', wish_list_add_or_remove, name='wish-list'),
     path('wish-list/', WishListView.as_view(), name='user-wish'),
     path('payment/', PaymentView.as_view(), name='payment'),
+    path('coupons/<id>/apply/', apply_coupon, name='apply-coupon'),
+    path('coupons/remove/', remove_coupon, name='apply-coupon'),
     # path('request-refund/', RequestRefundView.as_view(), name='request-refund'),
 ]
 
