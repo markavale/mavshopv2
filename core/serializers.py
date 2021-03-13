@@ -1,10 +1,7 @@
-# from django.db.models.fields import CharField
 from rest_framework import serializers
-import os
 from users.models import User
-# from django.conf import 
 from . models import (Item, Categories, OrderItem, Order, WishList
-            , Coupon, Payment, Review)
+            , Coupon, Review)
 from taggit_serializer.serializers import (TagListSerializerField,
                                            TaggitSerializer)
 
@@ -61,6 +58,14 @@ class ItemSerializer(TaggitSerializer, serializers.ModelSerializer):
         representation["download_url"] = instance.get_file_name()
         return representation
 
+    def validate_title(self, value):
+        qs = Item.objects.filter(title__iexact=value) # including instance
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError("This title has already been used")
+        return value
+
 class OrderItemSerializer(serializers.ModelSerializer):
     item = ItemSerializer(many=False, read_only=False)
 
@@ -77,15 +82,14 @@ class CouponSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=False)
     coupon = CouponSerializer(many=False, read_only=True)
-    sub_total = serializers.CharField(source='get_sub_total', read_only=True)
-    total = serializers.CharField(source='get_total', read_only=True)
-    total_items = serializers.CharField(source='get_total_items', read_only=True)
+    sub_total = serializers.IntegerField(source='get_sub_total', read_only=True)
+    sub_total_selected_items = serializers.IntegerField(source='get_selected_items_sub_total', read_only=True)
+    total = serializers.IntegerField(source='get_total', read_only=True)
+    total_items = serializers.IntegerField(source='get_total_items', read_only=True)
     
     class Meta:
         model = Order
         fields = '__all__'
-
-
 
 class WishListSerializer(serializers.ModelSerializer):
     items = ItemSerializer(many=True, read_only=True)
@@ -94,21 +98,6 @@ class WishListSerializer(serializers.ModelSerializer):
     class Meta:
         model = WishList
         fields = '__all__'
-
-class WishRetrieveSerializer(serializers.ModelSerializer):
-    items = ItemSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = WishList
-        fields = '__all__'
-
-class PaymentSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Payment
-        fields = '__all__'
-
-
 
 class AddCouponSerializer(serializers.Serializer):
     code = serializers.CharField(max_length = 100) 

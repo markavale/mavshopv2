@@ -1,15 +1,14 @@
 <template>
   <div>
-    <!-- v-for="orderItem in getOrderItems"
-      :key="orderItem.id" -->
     <v-row class="ma-0" align="start" align-content="start">
       <v-col cols="1">
         <v-checkbox
-          v-model="cartItemStatus"
+          v-model="isActiveItem"
           color="primary"
-          :value="orderItem"
+          :value="orderItem.is_selected"
           hide-details
           class="my-2 ml-3"
+          @click.prevent="selectItem(orderItem)"
         ></v-checkbox>
       </v-col>
 
@@ -52,27 +51,27 @@
 export default {
   name: "Cart-Item",
   data() {
-    return {};
+    return {
+      isActiveItem: true,
+    };
   },
   props: {
     orderItem: Object,
-    isSelected: {
-      type: Boolean,
-      default: true,
-    },
   },
-  mounted() {},
+  mounted() {
+    this.mountSelectedItems();
+  },
   computed: {
-    cartItemStatus: {
-      get() {
-        return this.isSelected;
-      },
-      set(newValue){
-        this.isSelected = newValue
-      }
+  },
+  methods: {
+    mountSelectedItems(){
+      this.isActiveItem = this.orderItem.is_selected
+    },
+    selectItem(item){
+      this.$store.dispatch('invertSelectItem', item)
+      this.mountSelectedItems()
     },
   },
-  methods: {},
 };
 </script>
 

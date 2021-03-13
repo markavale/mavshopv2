@@ -1,55 +1,35 @@
-from django.db.models import query
-from django.http.response import Http404
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import  viewsets, status
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, ListCreateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.core.exceptions import ObjectDoesNotExist
-import string
-import random
 from core.serializers import (ItemSerializer, OrderItemSerializer, OrderSerializer, CategoriesSerializer,
-                 CouponSerializer, AddCouponSerializer, PaymentSerializer, ReviewSerializer, WishListSerializer,
-                 WishRetrieveSerializer,)
+                 CouponSerializer, AddCouponSerializer, ReviewSerializer, WishListSerializer,
+                        )
 from core.models import (Item, Categories, OrderItem, Order,
-             Coupon, Payment, Review, WishList)
-# import os
-# from django.conf import settings
+             Coupon, Review, WishList)
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from core.permissions import IsAssigned
+from core.utils import (get_user_orders, get_item_instance, get_order_instance, 
+        create_ref_code
+)
 
-# DRY: get request use order
-def get_user_orders(request, user, ordered):
-    order_qs = Order.objects.filter(user=user, ordered=ordered)
-    return order_qs
-
-
-# @permission_classes([AllowAny])
-# @api_view(['GET', ])
+@permission_classes([AllowAny])
+@api_view(['GET', ])
 def download_view(request, slug):
     item = Item.objects.get(slug=slug)
     filename = item.get_file_name()
-    # if request.method == "GET":
     if item.is_free:
         response = HttpResponse(item.download_file, content_type='text/plain')
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
         item.downloads += 1
         item.save()
-        return response
-        # return Response(response)
-        # else:
-        #     response = HttpResponse(item.download_file, content_type='text/plain')
-        #     response['Content-Disposition'] = 'attachment; filename=%s' % filename
-        #     item.downloads += 1
-        #     item.save()
-        #     return response   
-
-def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
+        return response  
 
 class CatergoryView(ListAPIView):
     queryset = Categories.objects.all().order_by('category_name')
@@ -57,7 +37,6 @@ class CatergoryView(ListAPIView):
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category_type']
-
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
@@ -79,9 +58,6 @@ class ItemViewSet(viewsets.ModelViewSet):
         return super().retrieve(request, slug)
         
     def get_permissions(self):
-    # """
-    # Instantiates and returns the list of permissions that this view requires.
-    # """
         if self.action == 'list':
             permission_classes = [AllowAny]
         elif self.action == 'retrieve':
@@ -93,61 +69,116 @@ class ItemViewSet(viewsets.ModelViewSet):
 class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
     lookup_field = 'id'
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAssigned]
 
     def get_queryset(self):
-        queryset = OrderItem.objects.filter(user = self.request.user)
+        queryset = OrderItem.objects.filter(user = self.request.user, is_ordered=False).order_by('-item')
         return queryset
-    
 
-    # def get_permissions(self):
-    # # """
-    # # Instantiates and returns the list of permissions that this view requires.
-    # # """
-    #     if self.action == 'list':
-    #         permission_classes = [AllowAny]
-    #     else:
-    #         permission_classes = [IsAdminUser]
-    #     return [permission() for permission in permission_classes]
+    def partial_update(self, request, *args, **kwargs):
+        order_item = self.get_object()
+        serializer = self.serializer_class(order_item, data= request.data, partial=True)
+        item = get_item_instance(request, order_item.item.slug)
+        data = {}
+        
+        if serializer.is_valid():
+            for key, value in serializer.validated_data.items():
+                print(key, value)
+                serializer.validated_data[f'{key}'] = value
+                serializer.save()
+            data['success'] = "Update success"
+            return Response(data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+        order_item = self.get_object()
+        serializer = self.serializer_class(order_item, data= request.data)
+        item = get_item_instance(request, order_item.item.slug)
+        data = {}
+        
+        if serializer.is_valid():
+            for key, value in serializer.validated_data.items():
+                serializer.validated_data[f'{key}'] = value
+                serializer.save()
+            data['success'] = "Update success"
+            return Response(data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+@permission_classes([IsAssigned])
+def invert_order_items_select_status(request):
+    order = get_order_instance(request, request.user, False)
+    order_items = order.items.all()
+    data = {}
+    print(order_items)
+    if request.method == 'PATCH':
+        print(request.data['is_selected'])
+        for order_item in order_items:
+            order_item.is_selected = request.data['is_selected']
+            order_item.save()
+        # serializer = OrderItemSerializer(order_items, data=request.data, partial=True)
+        # if serializer.is_valid():
+        #     for key, value in serializer.validated_data.items():
+        #         print(key, value)
+        #         serializer.validated_data[f'{key}'] = value
+        #         serializer.save()
+        data['success'] = "Update success"
+        return Response(data)
+        # return Response(status=status.HTTP_200_OK) 
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+@permission_classes([IsAssigned])
+def invert_use_coupon_from_order(request):
+    order = get_order_instance(request, request.user, False)
+    data = {}
+    if request.method == 'PATCH':
+        print(request.data['use_coupon'])
+        serializer = OrderItemSerializer(order, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.validated_data['use_coupon'] = request.data['use_coupon']
+            serializer.save()
+        data['success'] = "Update success"
+        return Response(data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class OrdersViewSet(viewsets.ModelViewSet):
-    # queryset = Order.objects.all()
     serializer_class = OrderSerializer
     lookup_field = 'id'
-    permission_classes = [AllowAny]
+    permission_classes = [IsAssigned]
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        return Order.objects.filter(user=self.request.user, ordered=False)
 
-    def list(self, request, *args, **kwargs):
-        # order_qs = Order.objects.filter(ordered=False, user= self.request.user)
-        # if order_qs:
-        #     order = order_qs[0]
-        #     # coupon = order.coupon
-        #     if order.items.count() == 0:
-        #         if order.coupon:
-        #             order.coupon = None
-        #             order.save()
-        #             print(order.coupon)
-        return super().list(request, *args, **kwargs)
+    def partial_update(self, request, *args, **kwargs):
+        order = get_order_instance(request, request.user, False)
+        serializer = self.serializer_class(order, data= request.data, partial=True)
+        data = {}
+        
+        if serializer.is_valid():
+            for key, value in serializer.validated_data.items():
+                print(key, value)
+                serializer.validated_data[f'{key}'] = value
+                serializer.save()
+            data['success'] = "Update success"
+            return Response(data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_permissions(self):
-    # """
-    # Instantiates and returns the list of permissions that this view requires.
-    # """
-        if self.action == 'list':
-            permission_classes = [IsAuthenticated]
-        elif self.action == 'retrieve':
-            permission_classes = [IsAuthenticated] # AllowAny
-        elif self.action == 'create':
-            permission_classes = [AllowAny] # AllowAny
-        else:
-            permission_classes = [IsAdminUser]
-        return [permission() for permission in permission_classes]
+    def update(self, request, *args, **kwargs):
+        order = get_order_instance(request, request.user, False)
+        serializer = self.serializer_class(order, data= request.data)
+        data = {}
+        
+        if serializer.is_valid():
+            for key, value in serializer.validated_data.items():
+                print(key, value)
+                serializer.validated_data[f'{key}'] = value
+                serializer.save()
+            data['success'] = "Update success"
+            return Response(data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAssigned])
 @api_view(['POST', ])
 def add_to_cart(request, slug):
     data = {}
@@ -156,7 +187,6 @@ def add_to_cart(request, slug):
     order_item, created = OrderItem.objects.get_or_create(user = request.user, 
         item = item,
         is_ordered=False)
-    # order_item.save()
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     # check if user has active order
     if order_qs.exists():
@@ -186,7 +216,7 @@ def add_to_cart(request, slug):
         print(f'{item.title} was added to your cart.')
         return Response(data)
 
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAssigned])
 @api_view(['POST', ])
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
@@ -205,8 +235,6 @@ def remove_from_cart(request, slug):
             data['message'] = f"{item.title} was remove from your cart."
             data['type'] = 'success'
             return Response(data)
-        # elif order.items.count() == 0:
-        #     order.coupon.delete()
         # if item was not in cart
         else:
             data['message'] = f'{item.title} was not in your cart.'
@@ -217,18 +245,32 @@ def remove_from_cart(request, slug):
         data['message'] = "You don't have an active order."
         data['type'] = 'info'
         return Response(data)
-    
+
+@permission_classes([IsAssigned])
+@api_view(['POST', ])
+def remove_selected_items(request):
+    data = {}
+    try:
+        order_items = OrderItem.objects.filter(user=request.user, is_ordered=False, is_selected=True)
+        [order_item.delete() for order_item in order_items]
+        total_item = 'items' if len(order_items) > 1 else 'item'
+        data['success'] = f"{len(order_items)} {total_item} was deleted successfully"
+        return Response(data, status=status.HTTP_200_OK)
+    except OrderItem.DoesNotExist:
+        data['error'] = "You do not have an active order"
+        return Response(data, status=status.HTTP_404_NOT_FOUND)
+
 def get_coupon(request, code):
     try:
         coupon = Coupon.objects.get(code=code)
         print(coupon)
         return coupon
-    except ObjectDoesNotExist:
+    except Coupon.DoesNotExist:
         data = {}
         data['message'] = 'This coupon does not exist.'
         return Response(data)
 
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAssigned])
 @api_view(['POST', ])
 def apply_coupon(request, id):
     try:
@@ -244,7 +286,7 @@ def apply_coupon(request, id):
     except Coupon.DoesNotExist:
         return Response({'message': 'Coupon does not exist.'}, status=status.HTTP_404_NOT_FOUND)
 
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAssigned])
 @api_view(['POST', ])
 def remove_coupon(request):
     try:
@@ -278,7 +320,7 @@ class AddCouponView(APIView):
                 data['message'] = "Successfully added coupon"
                 return Response(data)
                 
-            except ObjectDoesNotExist:
+            except Order.DoesNotExist:
                 data['message'] = "You don't have an active order."
                 return Response(data)
 
@@ -289,40 +331,26 @@ class AddCouponView(APIView):
 class CouponViewSet(viewsets.ModelViewSet):
     queryset = Coupon.objects.all()
     serializer_class = CouponSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
-class PaymentView(APIView):
-    serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-        payment = Payment.objects.all()
-        serializer = self.serializer_class(payment, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
 
 class WishListView(ListAPIView):
     serializer_class = WishListSerializer
     queryset = WishList.objects.all().order_by('-timestamp')
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAssigned,]
 
     def list(self, request, *args, **kwargs):
-        #queryset = self.filter_queryset(self.get_queryset())
         queryset = self.queryset.filter(user=request.user)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-@permission_classes([IsAuthenticated,])
+@permission_classes([IsAssigned,])
 @api_view(['POST', 'GET', ])
 def wish_list_add_or_remove(request, slug):
     try:
@@ -350,9 +378,6 @@ def wish_list_add_or_remove(request, slug):
             return Response(data)
 
     if request.method == "POST":
-        # item = get_object_or_404(Item, slug=slug)
-        # data = {}
-        # wish_qs = WishList.objects.filter(user=request.user).order_by('-timestamp')
         print(wish_qs) 
         # check if user does have an active wish list
         if wish_qs.exists():

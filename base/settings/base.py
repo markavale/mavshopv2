@@ -1,7 +1,8 @@
 from pathlib import Path
 # import os
 from decouple import config
-
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent 
@@ -33,6 +34,7 @@ LOCAL_APPS = [
     'analytics.apps.AnalyticsConfig',
     'marketing.apps.MarketingConfig',
     'core.apps.CoreConfig',
+    'payments.apps.PaymentsConfig',
 ]
 THIRD_PARTY_APPS = [
     'dj_rest_auth',
@@ -151,3 +153,13 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Sentry
+sentry_sdk.init(
+    dsn="https://773d0213ac3944e6ba680f115c4e0496@o517935.ingest.sentry.io/5626297",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

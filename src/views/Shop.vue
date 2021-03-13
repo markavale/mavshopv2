@@ -8,46 +8,53 @@
             <v-card-title>Filters</v-card-title>
             <v-divider></v-divider>
             <v-list>
-              
               <v-list-group>
-              <template v-slot:activator>
+                <template v-slot:activator>
                   <v-list-item-content>
                     <v-list-item-title>Lightroom</v-list-item-title>
                   </v-list-item-content>
-              </template>
-              <div>
-              <v-list-item
-                v-for="category in lightroomCategories"
-                :key="category.id"
-                class="categoryItem"
-                active-class="primary"
-              >
-                <!-- <v-btn> -->
-                  <v-list-item-content  @click.prevent="categoryName(category.id)">
-                  <v-list-item-title>{{ category.category_name }}</v-list-item-title>
-                </v-list-item-content>
-                <!-- </v-btn> -->
-              </v-list-item>
-              </div>
+                </template>
+                <div>
+                  <v-list-item
+                    v-for="category in lightroomCategories"
+                    :key="category.id"
+                    class="categoryItem"
+                    active-class="primary"
+                  >
+                    <!-- <v-btn> -->
+                    <v-list-item-content
+                      @click.prevent="categoryName(category.id)"
+                    >
+                      <v-list-item-title>{{
+                        category.category_name
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                    <!-- </v-btn> -->
+                  </v-list-item>
+                </div>
               </v-list-group>
 
-               <v-list-group>
-              <template v-slot:activator>
+              <v-list-group>
+                <template v-slot:activator>
                   <v-list-item-content>
                     <v-list-item-title>Photoshop</v-list-item-title>
                   </v-list-item-content>
-              </template>
-              <div>
-              <v-list-item
-                v-for="category in photoshopCategories"
-                :key="category.id"
-                class="categoryItem"
-              >
-                <v-list-item-content  @click.prevent="categoryName(category.id)">
-                  <v-list-item-title>{{ category.category_name }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              </div>
+                </template>
+                <div>
+                  <v-list-item
+                    v-for="category in photoshopCategories"
+                    :key="category.id"
+                    class="categoryItem"
+                  >
+                    <v-list-item-content
+                      @click.prevent="categoryName(category.id)"
+                    >
+                      <v-list-item-title>{{
+                        category.category_name
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
               </v-list-group>
             </v-list>
             <v-divider></v-divider>
@@ -159,88 +166,95 @@
               </v-sheet>
             </div>
           </div>
-
           <div class="row text-left" v-else>
             <div
-      class="col-md-3 col-sm-6 col-xs-12"
-      :key="item.id"
-      v-for="item in getItems"
-    >
-      <v-hover v-slot:default="{ hover }">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-img
-            class="white--text align-end"
-            :aspect-ratio="16 / 9"
-            height="200px"
-            width="100%"
-            :src="item.new_img"
-          >
-            <!-- <v-card-title>{{ item.item_type }} </v-card-title> -->
-            <v-expand-transition>
-              <div
-                v-if="hover"
-                class="d-flex transition-fast-in-fast-out transparent v-card--reveal display-3 white--text"
-                style="height: 70%"
-              >
-                <!-- <CartModal /> -->
-                <v-btn
-                  v-if="hover"
-                  @click="quickView(item)"
-                  style="text-decoration: none"
-                  >VIEW</v-btn
-                >
-              </div>
-            </v-expand-transition>
-            <template v-slot:placeholder>
-              <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular
-                  indeterminate
-                  color="#15314b"
-                ></v-progress-circular>
-              </v-row>
-            </template>
-          </v-img>
-          <v-card-text class="text--primary">
-            <div class="truncateText">
-              <router-link
-                class="text-muted"
-                :to="{
-                  name: 'item',
-                  params: {
-                    itemType: item.item_type,
-                    slug: item.slug,
-                  },
-                }"
-                >{{ item.title }}</router-link
-              >
-            </div>
-            <div
-              v-if="item.is_free"
-              class="title font-weight-bold"
-              style="color: #15314b"
+              class="col-md-3 col-sm-6 col-xs-12"
+              :key="item.id"
+              v-for="item in getItems"
             >
-              FREE
-            </div>
-            <div
-              v-if="!item.is_free & !item.discount_price"
-              class="title font-weight-bold"
-              style="color: #15314b"
-            >
-              ${{ item.price }}
-            </div>
-            <div v-if="!item.is_free">
-              <span class="title font-weight-bold" style="color: #15314b">
-                ${{ item.discount_price }}
-              </span>
+              <v-hover v-slot:default="{ hover }">
+                <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+                  <v-img
+                    class="white--text align-end"
+                    :aspect-ratio="16 / 9"
+                    height="200px"
+                    width="100%"
+                    :src="item.new_img"
+                  >
+                    <!-- <v-card-title>{{ item.item_type }} </v-card-title> -->
+                    <v-expand-transition>
+                      <div
+                        v-if="hover"
+                        class="d-flex transition-fast-in-fast-out transparent v-card--reveal display-3 white--text"
+                        style="height: 70%"
+                      >
+                        <!-- <CartModal /> -->
+                        <v-btn
+                          v-if="hover"
+                          @click="quickView(item)"
+                          style="text-decoration: none"
+                          >VIEW</v-btn
+                        >
+                      </div>
+                    </v-expand-transition>
+                    <template v-slot:placeholder>
+                      <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                      >
+                        <v-progress-circular
+                          indeterminate
+                          color="#15314b"
+                        ></v-progress-circular>
+                      </v-row>
+                    </template>
+                  </v-img>
+                  <v-card-text class="text--primary">
+                    <div class="truncateText">
+                      <router-link
+                        class="text-muted"
+                        :to="{
+                          name: 'item',
+                          params: {
+                            itemType: item.item_type,
+                            slug: item.slug,
+                          },
+                        }"
+                        >{{ item.title }}</router-link
+                      >
+                    </div>
+                    <div
+                      v-if="item.is_free"
+                      class="title font-weight-bold"
+                      style="color: #15314b"
+                    >
+                      FREE
+                    </div>
+                    <div
+                      v-if="!item.is_free & !item.discount_price"
+                      class="title font-weight-bold"
+                      style="color: #15314b"
+                    >
+                      ${{ item.price }}
+                    </div>
+                    <div v-if="!item.is_free">
+                      <span
+                        class="title font-weight-bold"
+                        style="color: #15314b"
+                      >
+                        ${{ item.discount_price }}
+                      </span>
 
-              <span class="grey--text text-decoration-line-through font-italic"
-                >${{ item.price }}</span
-              >
+                      <span
+                        class="grey--text text-decoration-line-through font-italic"
+                        >${{ item.price }}</span
+                      >
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-hover>
             </div>
-          </v-card-text>
-        </v-card>
-      </v-hover>
-    </div>
           </div>
           <div class="text-center mt-12">
             <v-pagination v-model="page" :length="6"></v-pagination>
@@ -293,68 +307,67 @@ export default {
     min: 0,
     max: 10000,
     items: [
-        {
-          action: 'mdi-ticket',
-          items: [{ title: 'List Item' }],
-          title: 'Attractions',
-        },
-        {
-          action: 'mdi-silverware-fork-knife',
-          active: true,
-          items: [
-            { title: 'Breakfast & brunch' },
-            { title: 'New American' },
-            { title: 'Sushi' },
-          ],
-          title: 'Dining',
-        },
-        {
-          action: 'mdi-school',
-          items: [{ title: 'List Item' }],
-          title: 'Education',
-        },
-        {
-          action: 'mdi-run',
-          items: [{ title: 'List Item' }],
-          title: 'Family',
-        },
-        {
-          action: 'mdi-bottle-tonic-plus',
-          items: [{ title: 'List Item' }],
-          title: 'Health',
-        },
-        {
-          action: 'mdi-content-cut',
-          items: [{ title: 'List Item' }],
-          title: 'Office',
-        },
-        {
-          action: 'mdi-tag',
-          items: [{ title: 'List Item' }],
-          title: 'Promotions',
-        },
-      ],
+      {
+        action: "mdi-ticket",
+        items: [{ title: "List Item" }],
+        title: "Attractions",
+      },
+      {
+        action: "mdi-silverware-fork-knife",
+        active: true,
+        items: [
+          { title: "Breakfast & brunch" },
+          { title: "New American" },
+          { title: "Sushi" },
+        ],
+        title: "Dining",
+      },
+      {
+        action: "mdi-school",
+        items: [{ title: "List Item" }],
+        title: "Education",
+      },
+      {
+        action: "mdi-run",
+        items: [{ title: "List Item" }],
+        title: "Family",
+      },
+      {
+        action: "mdi-bottle-tonic-plus",
+        items: [{ title: "List Item" }],
+        title: "Health",
+      },
+      {
+        action: "mdi-content-cut",
+        items: [{ title: "List Item" }],
+        title: "Office",
+      },
+      {
+        action: "mdi-tag",
+        items: [{ title: "List Item" }],
+        title: "Promotions",
+      },
+    ],
     pageLoading: false,
     categories: [],
     lightroom_category: [],
-    photoshop_category: []
+    photoshop_category: [],
   }),
   mounted() {
     this.getAllItems();
     this.loadPage();
     this.getCategories();
-    
   },
   computed: {
-    ...mapGetters(["getItems", 'getWishLists', 'prodItem', ]),
-    itemCategories(){
-      return this.categories
+    ...mapGetters(["getItems", "getWishLists", "prodItem"]),
+    itemCategories() {
+      return this.categories;
     },
-    photoshopCategories(){
-      return this.photoshop_category
+    photoshopCategories() {
+      return this.photoshop_category;
     },
-    lightroomCategories(){
-      return this.lightroom_category
+    lightroomCategories() {
+      return this.lightroom_category;
     },
   },
 
@@ -374,7 +387,7 @@ export default {
         this.pageLoading = false;
       }, 1500);
     },
-    
+
     // downloadItem(prodItem){
     //   axiosBase
     //     .get(`api/items/${prodItem.slug}/download/`, {responseType: 'blob'})
@@ -443,48 +456,47 @@ export default {
     //         hideMethod: "fadeOut",
     //       });
     //       }
-         
+
     //       console.log(res.data.type)
     //     })
     //     .catch((err) => console.log(err));
     // },
-    categoryName(category){
-      console.log(category)
-      this.$store.dispatch('filterItems', category)
-      console.log("Dispatchingg.....")
-      console.log(this.getItems)
-      console.log("-------------------")
+    categoryName(category) {
+      console.log(category);
+      this.$store.dispatch("filterItems", category);
+      console.log("Dispatchingg.....");
+      console.log(this.getItems);
+      console.log("-------------------");
       // this.loadPage();
-
     },
-    getCategories(){
+    getCategories() {
       axiosBase
-      .get('api/items/categories/')
-      .then(res => {
-        this.categories = res.data
-        this.getPhotoshop()
-        this.getLightroom()
-        console.log(res.data)
-      })
-      .catch(err=>console.log(err))
+        .get("api/items/categories/")
+        .then((res) => {
+          this.categories = res.data;
+          this.getPhotoshop();
+          this.getLightroom();
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
     },
-    getPhotoshop(){
+    getPhotoshop() {
       axiosBase
-      .get('api/items/categories/?category_type=Photoshop')
-      .then(res => {
-        this.photoshop_category = res.data
-        console.log(this.photoshop_category)
-      })
-      .catch(err=>console.log(err))
+        .get("api/items/categories/?category_type=Photoshop")
+        .then((res) => {
+          this.photoshop_category = res.data;
+          console.log(this.photoshop_category);
+        })
+        .catch((err) => console.log(err));
     },
-    getLightroom(){
+    getLightroom() {
       axiosBase
-      .get('api/items/categories/?category_type=Lightroom')
-      .then(res => {
-        this.lightroom_category = res.data
-        console.log(this.lightroom_category)
-      })
-      .catch(err=>console.log(err))
+        .get("api/items/categories/?category_type=Lightroom")
+        .then((res) => {
+          this.lightroom_category = res.data;
+          console.log(this.lightroom_category);
+        })
+        .catch((err) => console.log(err));
     },
     quickView(item) {
       this.showQuickView = true;
@@ -496,10 +508,10 @@ export default {
     getAllItems() {
       this.$store.dispatch("fetchItems");
     },
-    wishList(payload){
-      this.$store.dispatch('addRemoveWishList', payload)
-      this.$store.dispatch('checkWishStatus', payload.slug)
-      this.$store.dispatch('fetchWishLists')
+    wishList(payload) {
+      this.$store.dispatch("addRemoveWishList", payload);
+      this.$store.dispatch("checkWishStatus", payload.slug);
+      this.$store.dispatch("fetchWishLists");
     },
   },
 };
@@ -528,33 +540,32 @@ export default {
   height: auto;
   width: 100%;
 }
-.border__left{
-  border-left:5px solid #1976d2;
-  background-color:#f5f5f5;
-  width:100%;
-  font-size:3rem;
+.border__left {
+  border-left: 5px solid #1976d2;
+  background-color: #f5f5f5;
+  width: 100%;
+  font-size: 3rem;
 }
-#quickViewDialog{
-  z-index:10002;
+#quickViewDialog {
+  z-index: 10002;
 }
 /* .tags{
   margin:0 0 30px 0;
   padding: 8px;
   background-color:#fff;
 } */
-.categoryItem{
+.categoryItem {
   padding-left: 3rem;
 }
-.categoryItem:hover{
-  background-color:rgba(235, 235, 235, 0.5);
+.categoryItem:hover {
+  background-color: rgba(235, 235, 235, 0.5);
 }
-.activeCategory{
-  background-color:blue !important;
+.activeCategory {
+  background-color: blue !important;
 }
-.thumbnail{
-
-  width:100%;
-  min-height:auto;
-  max-height:550px;
+.thumbnail {
+  width: 100%;
+  min-height: auto;
+  max-height: 550px;
 }
 </style>

@@ -126,7 +126,6 @@ export default {
           console.log(res.data);
           this.wishLoading = false;
           this.$store.dispatch("fetchWishLists");
-          console.log(this.getWishStatus);
         })
         .catch((err) => {
           console.log(err);

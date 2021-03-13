@@ -87,3 +87,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles' # staticfiles for collecting static and f
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+## Stripe API Keys ##
+STRIPE_API_SK = config('STRIPE_SK')
+STRIPE_API_PB = config('STRIPE_PB')

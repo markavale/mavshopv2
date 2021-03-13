@@ -8,7 +8,7 @@
           <v-img src="@/assets/img/logo.png" class="brand-logo"></v-img>
         </div>
         <v-toolbar-title class="headline m-auto">
-          <span class="brand__title">eMav</span>
+          <span class="brand__title">Get Design</span>
         </v-toolbar-title>
       </router-link>
       <!-- <h1 class="brand__name">eMav Shop</h1>

@@ -1,4 +1,4 @@
-# djangovue-backend-boilerplate
+# Django Vue Project App
 
 ## Project Details
 This Template includes dj-rest-auth for authentication and Token authentication.

@@ -8,8 +8,8 @@ const APIUrl = APIUrlDevelopment
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // Make Axios play nice with Django CSRF
-// axios.defaults.xsrfCookieName = 'csrftoken'
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 
 const axiosBase = axios.create({
     baseURL: APIUrl,
