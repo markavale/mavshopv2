@@ -35,6 +35,7 @@ model-mommy = "*"
 coverage = "*"
 django-filter = "*"
 django = "*"
+stripe = "*"
 
 [requires]
 python_version = "3.8"

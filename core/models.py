@@ -4,7 +4,7 @@ from django.conf import settings
 from django.template.defaultfilters import slugify # new
 from taggit.managers import TaggableManager
 import os
-# from PIL import Image
+from PIL import Image
 
 User = settings.AUTH_USER_MODEL
 
@@ -67,9 +67,26 @@ class Item(models.Model):
         })
 
     def save(self, *args, **kwargs): # new
+        super(Item,self).save(*args, **kwargs)
+
+        if self.old_img:
+            old_img = Image.open(self.old_img.path)
+            if old_img and old_img.height > 2048 or old_img.width > 2048:
+                output_size = (2048, 2048)
+                old_img.thumbnail(output_size)
+                old_img.save(self.old_img.path)
+
+        if self.new_img:
+            new_img = Image.open(self.new_img.path)
+            if new_img and new_img.height > 2048 or new_img.width > 2048:
+                output_size = (2048, 2048)
+                new_img.thumbnail(output_size)
+                new_img.save(self.new_img.path)
+
         if not self.slug:
             self.slug = slugify(self.title)
-        return super().save(*args, **kwargs)
+        
+        # return super().save(*args, **kwargs)
 
 class Review(models.Model):
     user            = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -117,19 +134,17 @@ class Categories(models.Model):
             self.slug = slugify(self.category_name)
         return super().save(*args, **kwargs)
 
-
 class OrderItem(models.Model):
     user                = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_ordered         = models.BooleanField(default=False)
+    is_ordered          = models.BooleanField(default=False)
     item                = models.ForeignKey(Item, on_delete=models.CASCADE)
     is_selected         = models.BooleanField(default=True)
-    # quantity        = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.item}"
 
 class Order(models.Model):
-    user                    = models.OneToOneField(User, on_delete=models.CASCADE)
+    user                    = models.ForeignKey(User, on_delete=models.CASCADE)
     ref_code                = models.CharField(max_length=20, blank=True, null=True)
     items                   = models.ManyToManyField(OrderItem)
     start_date              = models.DateTimeField(auto_now_add=True)
@@ -170,12 +185,21 @@ class Order(models.Model):
             total += order_item.item.get_price()
         return total
 
+    def get_selected_items_sub_total(self):
+        total = 0
+        for order_item in self.items.filter(is_selected=True):
+            total += order_item.item.get_price()
+        return total
+
     def get_total(self):
         total = 0
         for order_item in self.items.filter(is_selected=True):
             total += order_item.item.get_price()
         if self.coupon and self.use_coupon:
-            total -= self.coupon.amount
+            if self.coupon.amount > total:
+                return total
+            else:
+                total -= self.coupon.amount
         return total
     
     def get_total_items(self):
@@ -211,12 +235,3 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
-class Payment(models.Model):
-    stripe_charge_id    = models.CharField(max_length=50)
-    user                = models.ForeignKey(User, on_delete=models.SET_NULL,
-                            blank=True, null=True)
-    amount              = models.FloatField()
-    timestamp           = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.user.username

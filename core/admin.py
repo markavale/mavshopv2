@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (Item, OrderItem, Order, Coupon, Categories,
-        Payment, Review, WishList
+        Review, WishList
 #Payment
 #UserProfile
 #Address
@@ -61,7 +61,7 @@ admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Categories, CategoryAdmin)
 #admin.site.register(Address, AddressAdmin)
-admin.site.register(Payment)
+# admin.site.register(Payment)
 admin.site.register(Coupon)      
 admin.site.register(Review)  
 admin.site.register(WishList)

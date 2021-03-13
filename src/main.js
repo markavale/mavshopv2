@@ -4,9 +4,9 @@ import store from "./store/store";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
 import CxltToastr from 'cxlt-vue2-toastr'
+import VCountryRegionSelect from '@timbouc/vuetify-country-region-input'
+Vue.use(VCountryRegionSelect)
 Vue.use(CxltToastr)
-
-
 Vue.config.productionTip = false;
 
 // Vue router validation

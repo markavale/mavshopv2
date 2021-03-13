@@ -60,8 +60,20 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "order-summary" */ '../views/OrderSummary.vue'),
         meta: {
-            requiresAuth: false,
+            requiresAuth: true,
             title: 'Orders Summary',
+            breadCrumb: 'Order Summary'
+        }
+
+    },
+    {
+        path: '/checkout',
+        name: 'checkout',
+        component: () =>
+            import ( /* webpackChunkName: "order-checkout" */ '../views/Checkout.vue'),
+        meta: {
+            requiresAuth: true,
+            title: 'Checkout',
             breadCrumb: 'Order Summary'
         }
 
